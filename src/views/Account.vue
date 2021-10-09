@@ -16,9 +16,11 @@ export default defineComponent({
   name: "Account",
   setup() {
     return {
-      metaMaskSignin: () => {
+      metaMaskSignin: async () => {
         if (typeof window.ethereum !== 'undefined') {
-          alert("MetMask is installed")
+          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+          const account = accounts[0];
+          alert(account);
         } else {
           alert("MetMask is NOT installed")
         }
