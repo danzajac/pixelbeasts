@@ -4,21 +4,21 @@
       @click="metaMaskSignin"
       class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
     >
-      Signin with Metamask
+      Signin with MetaMask
     </a>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import { googleSignin } from "../utils/SocialLogin";
+import { ethereum } from "../utils/MetaMask";
 
 export default defineComponent({
   name: "Account",
   setup() {
     return {
       metaMaskSignin: async () => {
-        if (typeof window.ethereum !== 'undefined') {
-          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        if (typeof ethereum !== 'undefined') {
+          const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
           const account = accounts[0];
           alert(account);
         } else {
