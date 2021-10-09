@@ -5,20 +5,13 @@ name: Deploy to Firebase Hosting on PR
 'on': pull_request
 jobs:
   build_and_preview:
+    if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - name: Yarn
-        run: yarn install
-      - run: yarn run build
+      - run: npm ci && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_FIR_VUE_STARTUP_KIT }}'
-          projectId: '${{ secrets.FIREBASE_PROJECT }}'
-        env:
-          FIREBASE_CLI_PREVIEWS: hostingchannels
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_THE_PIXELBEASTS }}'
+          projectId: the-pixelbeasts
