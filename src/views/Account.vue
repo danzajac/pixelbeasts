@@ -9,7 +9,7 @@
       </a>
     </div>
     <div v-else>
-      You need to have MetaMask extension installed to the browser.
+      You need to have MetaMask extension installed to your browser.
     </div>
   </div>
 </template>
