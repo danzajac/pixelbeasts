@@ -24,7 +24,7 @@ export default defineComponent({
     const metaMaskSignin = async () => {
       const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
       const account = accounts[0];
-      // this.store.account = account;
+      //this.$store.commit('setAccount', account);
       alert("account:"+account);
     };
     return {
