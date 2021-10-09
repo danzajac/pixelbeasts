@@ -14,8 +14,7 @@ import { ethereum } from "../utils/MetaMask";
 
 export default defineComponent({
   name: "Account",
-  setup() {
-    return {
+  methods: {
       metaMaskSignin: async () => {
         if (typeof ethereum !== 'undefined') {
           const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
@@ -25,7 +24,6 @@ export default defineComponent({
           alert("MetMask is NOT installed")
         }
       },
-    };
   },
 });
 </script>
