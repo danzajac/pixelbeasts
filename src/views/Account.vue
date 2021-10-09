@@ -1,10 +1,10 @@
 <template>
   <div class="account">
     <a
-      @click="googleSignin"
+      @click="metaMaskSignin"
       class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
     >
-      Signin with Google account
+      Signin with Metamask
     </a>
   </div>
 </template>
@@ -16,14 +16,13 @@ export default defineComponent({
   name: "Account",
   setup() {
     return {
-      googleSignin: googleSignin(
-        () => {
-          alert("OK");
-        },
-        (err) => {
-          alert(err.message);
+      metaMaskSignin: () => {
+        if (typeof window.ethereum !== 'undefined') {
+          alert("MetMask is installed")
+        } else {
+          alert("MetMask is NOT installed")
         }
-      ),
+      },
     };
   },
 });
