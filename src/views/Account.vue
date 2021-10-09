@@ -8,17 +8,19 @@
         Signin with MetaMask
       </a>
     </div>
+    <div v-else>
+      You need to have MetaMask extension installed to the browser.
+    </div>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import { ethereum } from "../utils/MetaMask";
+import { ethereum, hasMetaMask } from "../utils/MetaMask";
 import { mapState } from 'vuex';
 
 export default defineComponent({
   name: "Account",
   setup() {
-    const hasMetaMask = (typeof ethereum !== 'undefined');
     const metaMaskSignin = async () => {
       const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
       const account = accounts[0];
