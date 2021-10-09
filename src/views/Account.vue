@@ -1,7 +1,8 @@
 <template>
   <div class="account">
     <div v-if="hasMetaMask">
-      <a
+      <div v-if="account">{{ account }}</div>
+      <a v-else
         @click="metaMaskSignin"
         class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
       >
@@ -14,20 +15,21 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, computed } from "vue";
-import { ethereum, hasMetaMask } from "../utils/MetaMask";
-import { mapState } from 'vuex';
+import { defineComponent, ref } from "vue";
+import { hasMetaMask, requestAccount, getAccount } from "../utils/MetaMask";
 
 export default defineComponent({
   name: "Account",
   setup() {
+    const account = ref(null);
+    getAccount().then((value) => {
+      account.value = value;      
+    })
     const metaMaskSignin = async () => {
-      const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-      const account = accounts[0];
-      //this.$store.commit('setAccount', account);
-      alert("account:"+account);
+      account.value = await requestAccount();
     };
     return {
+      account,
       hasMetaMask,
       metaMaskSignin
     }
