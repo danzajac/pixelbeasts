@@ -14,16 +14,18 @@ import { ethereum } from "../utils/MetaMask";
 
 export default defineComponent({
   name: "Account",
-  methods: {
-      metaMaskSignin: async () => {
-        if (typeof ethereum !== 'undefined') {
-          const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-          const account = accounts[0];
-          alert(account);
-        } else {
-          alert("MetMask is NOT installed")
-        }
-      },
-  },
+  setup() {
+    return {
+        metaMaskSignin: async () => {
+          if (typeof ethereum !== 'undefined') {
+            const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+            const account = accounts[0];
+            alert(account);
+          } else {
+            alert("MetMask is NOT installed")
+          }
+        },
+    }
+  }
 });
 </script>
