@@ -42,8 +42,11 @@ export default defineComponent({
       const generateNonce = functions().httpsCallable('generateNonce');
       const result = await generateNonce({account});
       const nonce = result.data.nonce;
-      const result2 = await ethereum.request({ method: 'personal_sign', params: [nonce, account] });
-      alert(result2);
+      const signature = await ethereum.request({ method: 'personal_sign', params: [nonce, account] });
+      alert(signature);
+      const verifyNonce = functions().httpsCallable('verifyNonce');
+      const result2 = await verifyNonce({account, signature});
+      alert(result2.data.addr);
     }
     const account = computed(() => store.state.account);
     return {

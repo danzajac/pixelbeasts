@@ -17,7 +17,7 @@ export const generateNonce = functions.https.onCall((data, context) => {
 });
 
 export const verifyNonce = functions.https.onCall((data, context) => {
-  const signature = data.signiture;
+  const signature = data.signature;
   const account = data.account;
   const nonce = "\x19Ethereum Signed Message:\n" + message.length + message;
   const nonceBuffer = util.keccak(Buffer.from(nonce, "utf-8"));
