@@ -24,7 +24,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const metaMaskSignin = async () => {
-      store.commit('setAccount', await requestAccount());
+      await requestAccount(); // ethereum.on('accountsChanged') will handle the result
     };
     const account = computed(() => store.state.account);
     return {

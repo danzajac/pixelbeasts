@@ -18,7 +18,7 @@
 <script>
 import { computed } from "vue";
 import { useStore } from "vuex";
-import { getAccount } from "./utils/MetaMask";
+import { ethereum, getAccount, hasMetaMask } from "./utils/MetaMask";
 
 export default {
   setup() {
@@ -26,7 +26,17 @@ export default {
     const store = useStore();
     getAccount().then((value) => {
       store.commit('setAccount', value);
-    })
+    });
+    if (hasMetaMask) {
+      ethereum.on('accountsChanged', accounts => {
+        if (accounts.length == 0) {
+          store.commit('setAccount', null);
+        } else {
+          store.commit('setAccount', accounts[0]);
+        }
+      })
+    }
+
     const isSiginedIn = computed(() => store.getters.isSiginedIn);
 
     return {
