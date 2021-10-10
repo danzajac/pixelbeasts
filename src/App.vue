@@ -18,11 +18,15 @@
 <script>
 import { computed } from "vue";
 import { useStore } from "vuex";
+import { getAccount } from "./utils/MetaMask";
 
 export default {
   setup() {
     document.title = "Pixel Beasts"; // There might be a better way to do this, but it works.
     const store = useStore();
+    getAccount().then((value) => {
+      store.commit('setAccount', value);
+    })
     const isSiginedIn = computed(() => store.getters.isSiginedIn);
 
     return {

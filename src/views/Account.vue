@@ -23,9 +23,6 @@ export default defineComponent({
   name: "Account",
   setup() {
     const store = useStore();
-    getAccount().then((value) => {
-      store.commit('setAccount', value);
-    })
     const metaMaskSignin = async () => {
       store.commit('setAccount', await requestAccount());
     };
