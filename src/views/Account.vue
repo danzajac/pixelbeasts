@@ -26,7 +26,7 @@
 import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
 import { hasMetaMask, requestAccount, ethereum } from "../utils/MetaMask";
-import { functions } from "../utils/firebase";
+import { functions, auth } from "../utils/firebase";
 
 export default defineComponent({
   name: "Account",
@@ -44,7 +44,11 @@ export default defineComponent({
       alert(signature);
       const verifyNonce = functions.httpsCallable('verifyNonce');
       const result2 = await verifyNonce({account, signature});
-      alert(result2.data.token);
+      const token = result2.data.token; 
+      alert(token);
+      const credential = await auth.signInWithCustomToken(token);
+      const user = credential.user; 
+      alert(user);
     }
     const account = computed(() => store.state.account);
     return {
