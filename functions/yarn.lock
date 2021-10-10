@@ -1232,7 +1232,7 @@ firebase-functions-test@^0.2.0:
     "@types/lodash" "^4.14.104"
     lodash "^4.17.5"
 
-firebase-functions@^3.11.0:
+firebase-functions@^3.15.7:
   version "3.15.7"
   resolved "https://registry.yarnpkg.com/firebase-functions/-/firebase-functions-3.15.7.tgz#ac88657e7e28f5a5926d41ae3e8fae9c94621ccd"
   integrity sha512-ZD7r8eoWWebgs+mTqfH8NLUT2C0f7/cyAvIA1RSUdBVQZN7MBBt3oSlN/rL3e+m6tdlJz6YbQ3hrOKOGjOVYvQ==
