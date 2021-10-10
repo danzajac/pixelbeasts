@@ -26,6 +26,7 @@
 import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
 import { hasMetaMask, requestAccount, ethereum } from "../utils/MetaMask";
+import * as util from "ethereumjs-util";
 
 export default defineComponent({
   name: "Account",
@@ -37,9 +38,17 @@ export default defineComponent({
     const test = async () => {
       const account = store.state.account;
       const message = "Hello World";
-      const result = await ethereum.request({ method: 'personal_sign', params: [message, account] });
+      const signature = await ethereum.request({ method: 'personal_sign', params: [message, account] });
       //const result = await ethereum.request({ method: 'eth_accounts' });
-      alert(result);
+      alert(signature);
+
+      const nonce1 = "\x19Ethereum Signed Message:\n" + message.length + message;
+      const nonce = util.keccak(Buffer.from(nonce1, "utf-8"))
+      const { v, r, s } = util.fromRpcSig(signature)
+      const pubKey = util.ecrecover(util.toBuffer(nonce), v, r, s)
+      const addrBuf = util.pubToAddress(pubKey)
+      const addr = util.bufferToHex(addrBuf)
+      alert(addr);
     }
     const account = computed(() => store.state.account);
     return {
