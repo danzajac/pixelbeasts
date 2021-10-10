@@ -34,8 +34,11 @@ export default defineComponent({
       });
     });
 
+    /*
     const messageDoc = await db.doc("/test/message").get();
     const message = messageDoc.data();
+    */
+    const message = {message: "Hello"};
 
     return {
       message,

@@ -3,8 +3,12 @@ import { createStore } from "vuex";
 export default createStore({
   state: {
     account: undefined,
+    user: undefined,
   },
   mutations: {
+    setUser(state, user) {
+      state.user = user;
+    },
     setAccount(state, account) {
       state.account = account;
     },
