@@ -4,10 +4,10 @@
       <div v-if="account">
         <p>{{ account }}</p>
         <a 
-          @click="test"
+          @click="verifyIdentity"
           class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
         >
-          Test
+          Verify Identity
         </a>
       </div>
       <a v-else
@@ -26,6 +26,9 @@
 import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
 import { hasMetaMask, requestAccount, ethereum } from "../utils/MetaMask";
+import firebase from "firebase";
+
+const functions = firebase.functions;
 
 export default defineComponent({
   name: "Account",
@@ -34,16 +37,17 @@ export default defineComponent({
     const metaMaskSignin = async () => {
       await requestAccount(); // ethereum.on('accountsChanged') will handle the result
     };
-    const test = async () => {
+    const verifyIdentity = async () => {
       const account = store.state.account;
-      const message = "Hello World";
-      const result = await ethereum.request({ method: 'personal_sign', params: [message, account] });
-      //const result = await ethereum.request({ method: 'eth_accounts' });
-      alert(result);
+      const generateNonce = functions().httpsCallable('generateNonce');
+      const result = await generateNonce({account});
+      const nonce = result.data.nonce;
+      const result2 = await ethereum.request({ method: 'personal_sign', params: [nonce, account] });
+      alert(result2);
     }
     const account = computed(() => store.state.account);
     return {
-      test,
+      verifyIdentity,
       account,
       hasMetaMask,
       metaMaskSignin
