@@ -27,9 +27,7 @@ import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
 import { hasMetaMask, requestAccount, ethereum } from "../utils/MetaMask";
 import firebase from "firebase";
-
 const functions = firebase.functions;
-
 export default defineComponent({
   name: "Account",
   setup() {
