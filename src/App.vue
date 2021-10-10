@@ -23,11 +23,9 @@ export default {
   setup() {
     document.title = "Pixel Beasts"; // There might be a better way to do this, but it works.
     const store = useStore();
-    const user = computed(() => store.state.user);
     const isSiginedIn = computed(() => store.getters.isSiginedIn);
 
     return {
-      user,
       isSiginedIn,
     };
   },

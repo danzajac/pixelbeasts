@@ -15,19 +15,21 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, computed } from "vue";
+import { useStore } from "vuex";
 import { hasMetaMask, requestAccount, getAccount } from "../utils/MetaMask";
 
 export default defineComponent({
   name: "Account",
   setup() {
-    const account = ref(null);
+    const store = useStore();
     getAccount().then((value) => {
-      account.value = value;      
+      store.commit('setAccount', value);
     })
     const metaMaskSignin = async () => {
-      account.value = await requestAccount();
+      store.commit('setAccount', await requestAccount());
     };
+    const account = computed(() => store.state.account);
     return {
       account,
       hasMetaMask,
