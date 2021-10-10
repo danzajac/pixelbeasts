@@ -44,7 +44,7 @@ export default defineComponent({
       alert(signature);
       const verifyNonce = functions.httpsCallable('verifyNonce');
       const result2 = await verifyNonce({account, signature});
-      alert(result2.data.addr);
+      alert(result2.data.token);
     }
     const account = computed(() => store.state.account);
     return {
