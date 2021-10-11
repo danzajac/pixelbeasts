@@ -23,12 +23,7 @@
             </div>
           </div>
           <div v-else>
-            <a 
-              @click="fetchBeasts"
-              class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
-            >
-              Step 3: Fetch your PixelBeasts assets.
-            </a>
+            <p>Fetching assets...</p>
           </div>
         </div>
         <div v-else>
@@ -62,7 +57,6 @@ import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
 import { hasMetaMask, requestAccount, ethereum } from "../utils/MetaMask";
 import { functions, auth } from "../utils/firebase";
-import { fetchAssets } from "../utils/OpenSea";
 
 export default defineComponent({
   name: "Account",
@@ -87,11 +81,6 @@ export default defineComponent({
     const signOut = async () => {
       await auth.signOut();
     };
-    const fetchBeasts = async () => {
-      const account = store.state.account;
-      const assets = await fetchAssets(account);
-      store.commit('setAssets', assets);
-    };
     const selectAsset = () => {
       alert('selected');
     };
@@ -100,7 +89,6 @@ export default defineComponent({
     return {
       selectAsset,
       assets,
-      fetchBeasts,
       signOut,
       verifyIdentity,
       account,

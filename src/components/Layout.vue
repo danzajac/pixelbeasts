@@ -12,6 +12,7 @@ import { useStore } from "vuex";
 
 import { auth } from "../utils/firebase";
 import firebase from "firebase/app";
+import { fetchAssets } from "../utils/OpenSea";
 
 interface User {
   user: firebase.User | null;
@@ -29,6 +30,9 @@ export default defineComponent({
         if (user) {
           console.log("authStateChanged:");
           store.commit("setUser", reactive<User>({ user: user }));
+          const assets = fetchAssets(store.state.account, "beastopia-pixelbeasts").then(assets => {
+            store.commit('setAssets', assets);
+          })
         } else {
           store.commit("setUser", null);
         }
