@@ -24,7 +24,7 @@
           </div>
           <div v-else>
             <a 
-              @click="fetchAssets"
+              @click="fetchBeasts"
               class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
             >
               Step 3: Fetch your PixelBeasts assets.
@@ -62,6 +62,7 @@ import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
 import { hasMetaMask, requestAccount, ethereum } from "../utils/MetaMask";
 import { functions, auth } from "../utils/firebase";
+import { fetchAssets } from "../utils/OpenSea";
 
 export default defineComponent({
   name: "Account",
@@ -86,20 +87,9 @@ export default defineComponent({
     const signOut = async () => {
       await auth.signOut();
     };
-    const fetchAssets = async () => {
+    const fetchBeasts = async () => {
       const account = store.state.account;
-      const params: Record<string, string> = {
-        "owner": String(account),
-        "order_direction": "desc",
-        "offset": String(0),
-        "limit": String(40),
-        "collection": "beastopia-pixelbeasts"
-      };
-      const query = Object.keys(params).map(key => { return key+"="+encodeURIComponent(params[key])});
-      const url = "https://api.opensea.io/api/v1/assets?"+query.join('&');
-      const result = await fetch(url);
-      const json = await result.json();
-      const assets = json["assets"];
+      const assets = await fetchAssets(account);
       store.commit('setAssets', assets);
     };
     const selectAsset = () => {
@@ -110,7 +100,7 @@ export default defineComponent({
     return {
       selectAsset,
       assets,
-      fetchAssets,
+      fetchBeasts,
       signOut,
       verifyIdentity,
       account,
