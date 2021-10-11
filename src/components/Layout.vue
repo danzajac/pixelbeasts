@@ -34,6 +34,7 @@ export default defineComponent({
         } else {
           store.commit("setUser", null);
         }
+        store.commit('setAssets', undefined);
       });
     });
 

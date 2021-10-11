@@ -15,7 +15,11 @@
           </p>
           <div v-if="assets">
             <div v-for="asset in assets" :key="asset.id">
-              {{ asset.name }}
+              <a @click="selectAsset"
+            class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center px-6 rounded-lg hover:bg-green-600 hover:text-white">
+              {{ asset.name }} 
+              <img :src="asset.image_thumbnail_url" />
+              </a>
             </div>
           </div>
           <div v-else>
@@ -98,9 +102,13 @@ export default defineComponent({
       const assets = json["assets"];
       store.commit('setAssets', assets);
     };
+    const selectAsset = () => {
+      alert('selected');
+    };
     const account = computed(() => store.state.account);
     const assets = computed(() => store.state.assets);
     return {
+      selectAsset,
       assets,
       fetchAssets,
       signOut,
