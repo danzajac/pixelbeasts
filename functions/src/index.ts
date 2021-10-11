@@ -35,6 +35,12 @@ export const verifyNonce = functions.https.onCall(async (data, context) => {
   const signature = data.signature;
   const account = data.account;
   const uuid = data.uuid;
+  const refNonces = db.collection("nonces");
+  const doc = await refNonces.doc(uuid).get();
+  const result = doc.data();
+  if (result?.account != account) {
+    return {"error": "no nonce in the database"};
+  }
   const message = readableMessage + uuid;
   const nonce = "\x19Ethereum Signed Message:\n" + message.length + message;
   const nonceBuffer = util.keccak(Buffer.from(nonce, "utf-8"));
