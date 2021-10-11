@@ -2,8 +2,9 @@
   <div class="account">
     <div v-if="hasMetaMask">
       <div v-if="account">
-        <p>{{ account }}</p>
+        <div class="border-2 p-2 m-2">{{ account }}</div>
         <div v-if="isSiginedIn">
+          <p class="m-4">You are signed-in with your MetaMask identity.</p>
           <a 
             @click="signOut"
             class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
@@ -12,19 +13,23 @@
           </a>
         </div>
         <div v-else>
+        <p class="m-4">This site is connected with the MetaMask extension.<br/> 
+          Please sign-in by signing a message from PixelBeasts.</p>
           <a 
             @click="verifyIdentity"
             class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
           >
-            Sign In with MetaMask ID
+            Step 2: Sign In
           </a>
         </div>
       </div>
       <div v-else>
+        <p class="m-4">Please connect this site with the MetaMask extension,<br/>
+          then sign-in by signing a message from PixelBeasts.</p>
         <a @click="metaMaskConnect"
           class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
         >
-          Connect with MetaMask
+          Step 1: Connect with MetaMask
         </a>
       </div>
     </div>
