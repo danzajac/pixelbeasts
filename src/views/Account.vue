@@ -13,12 +13,19 @@
           </a>
 
           </p>
-          <a 
-            @click="fetchAssets"
-            class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
-          >
-            Step 3: Fetch your PixelBeasts assets.
-          </a>
+          <div v-if="assets">
+            <div v-for="asset in assets" :key="asset.id">
+              {{ asset.name }}
+            </div>
+          </div>
+          <div v-else>
+            <a 
+              @click="fetchAssets"
+              class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
+            >
+              Step 3: Fetch your PixelBeasts assets.
+            </a>
+          </div>
         </div>
         <div v-else>
         <p class="m-4">This site is connected with the MetaMask extension.<br/> 
@@ -88,10 +95,13 @@ export default defineComponent({
       const url = "https://api.opensea.io/api/v1/assets?"+query.join('&');
       const result = await fetch(url);
       const json = await result.json();
-      alert(JSON.stringify(json));
+      const assets = json["assets"];
+      store.commit('setAssets', assets);
     };
     const account = computed(() => store.state.account);
+    const assets = computed(() => store.state.assets);
     return {
+      assets,
       fetchAssets,
       signOut,
       verifyIdentity,

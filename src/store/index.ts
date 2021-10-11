@@ -4,6 +4,7 @@ export default createStore({
   state: {
     account: undefined,
     user: undefined,
+    assets: undefined,
   },
   mutations: {
     setUser(state, user) {
@@ -12,6 +13,9 @@ export default createStore({
     setAccount(state, account) {
       state.account = account;
     },
+    setAssets(state, assets) {
+      state.assets = assets;
+    }
   },
   getters: {
     isSiginedIn: (state) => {
