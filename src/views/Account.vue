@@ -4,12 +4,20 @@
       <div v-if="account">
         <div class="border-2 p-2 m-2">{{ account }}</div>
         <div v-if="isSiginedIn">
-          <p class="m-4">You are signed-in with your MetaMask identity.</p>
-          <a 
+          <p class="m-4">You are signed-in with your MetaMask identity.
+                      <a 
             @click="signOut"
             class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
           >
             Sign Out
+          </a>
+
+          </p>
+          <a 
+            @click="fetchAssets"
+            class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
+          >
+            Step 3: Fetch your PixelBeasts assets.
           </a>
         </div>
         <div v-else>
@@ -34,7 +42,7 @@
       </div>
     </div>
     <div v-else>
-      You need to have MetaMask extension installed to your browser.
+      You need to have <a target="_blank" class="underline" href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn">MetaMask extension</a> installed to your browser.
     </div>
   </div>
 </template>
@@ -63,12 +71,19 @@ export default defineComponent({
       const token = result2.data.token; 
       const credential = await auth.signInWithCustomToken(token);
       const user = credential.user; 
-    }
+    };
     const signOut = async () => {
       await auth.signOut();
-    }
+    };
+    const fetchAssets = async () => {
+      const url = "https://api.opensea.io/api/v1/assets?owner=0xf05a0497994a33f18aa378630bc674efc77ad557&order_direction=desc&offset=0&limit=20&collection=beastopia-pixelbeasts";
+      const result = await fetch(url);
+      const json = await result.json();
+      alert(JSON.stringify(json));
+    };
     const account = computed(() => store.state.account);
     return {
+      fetchAssets,
       signOut,
       verifyIdentity,
       account,
