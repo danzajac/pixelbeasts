@@ -1,17 +1,17 @@
 <template>
   <div class="account">
-    <div v-if="isSiginedIn">
-      <a 
-        @click="signOut"
-        class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
-      >
-        Sign Out
-      </a>
-    </div>
-    <div v-else>
-      <div v-if="hasMetaMask">
-        <div v-if="account">
-          <p>{{ account }}</p>
+    <div v-if="hasMetaMask">
+      <div v-if="account">
+        <p>{{ account }}</p>
+        <div v-if="isSiginedIn">
+          <a 
+            @click="signOut"
+            class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
+          >
+            Sign Out
+          </a>
+        </div>
+        <div v-else>
           <a 
             @click="verifyIdentity"
             class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
@@ -19,16 +19,17 @@
             Sign In with MetaMask ID
           </a>
         </div>
-        <a v-else
-          @click="metaMaskConnect"
+      </div>
+      <div v-else>
+        <a @click="metaMaskConnect"
           class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
         >
           Connect with MetaMask
         </a>
       </div>
-      <div v-else>
-        You need to have MetaMask extension installed to your browser.
-      </div>
+    </div>
+    <div v-else>
+      You need to have MetaMask extension installed to your browser.
     </div>
   </div>
 </template>
