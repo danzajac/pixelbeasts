@@ -15,11 +15,11 @@ export const helloWorld = functions.https.onRequest((request, response) => {
   response.send("Hello from Firebase!");
 });
 
-const readableMessage = "PixelBeasts needs to verify your identity." +
-                "Please sign this message.";
+const readableMessage = "PixelBeasts needs to verify your identity. " +
+                "Please sign this message. /n";
 
 export const generateNonce = functions.https.onCall((data, context) => {
-  const uuid = "#abcdefg";
+  const uuid = data.account;
   return {nonce: readableMessage + uuid, uuid};
 });
 
