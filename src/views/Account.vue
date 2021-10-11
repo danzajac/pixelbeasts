@@ -78,8 +78,12 @@ export default defineComponent({
       const result2 = await verifyNonce({account, signature, uuid});
       const token = result2.data.token; 
       console.log("verifyIdentity: token", token)
-      const credential = await auth.signInWithCustomToken(token);
-      const user = credential.user; 
+      if (token) {
+        const credential = await auth.signInWithCustomToken(token);
+        const user = credential.user; 
+      } else {
+        alert("Failed to verifyIdenty")
+      }
     };
     const signOut = async () => {
       await auth.signOut();
