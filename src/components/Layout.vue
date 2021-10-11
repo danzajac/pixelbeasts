@@ -1,7 +1,6 @@
 <template>
   <div class="layout">
-    <template v-if="user.user">
-      {{ account }}
+    <template v-if="isSiginedIn">
     </template>
     <router-view />
   </div>
@@ -22,15 +21,14 @@ export default defineComponent({
   name: "Layout",
   async setup() {
     const store = useStore();
+    const isSiginedIn = computed(() => store.getters.isSiginedIn);
     const account = computed(() => store.state.account);
-    const user = reactive<User>({ user: null });
 
     onMounted(() => {
-      auth.onAuthStateChanged((fbuser) => {
-        if (fbuser) {
+      auth.onAuthStateChanged((user) => {
+        if (user) {
           console.log("authStateChanged:");
-          user.user = fbuser;
-          store.commit("setUser", user);
+          store.commit("setUser", reactive<User>({ user: user }));
         } else {
           store.commit("setUser", null);
         }
@@ -44,8 +42,8 @@ export default defineComponent({
     */
 
     return {
-      account,
-      user,
+      isSiginedIn,
+      account
     };
   },
 });
