@@ -2,13 +2,13 @@
   <div id="nav">
     <template v-if="isSiginedIn">
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/about">About</router-link> |
       <router-link to="/account">Account</router-link>
     </template>
     <template v-else>
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
-      <router-link to="/account">Signin</router-link>
+      <router-link to="/account">Sign-In</router-link>
     </template>
   </div>
   <Suspense>

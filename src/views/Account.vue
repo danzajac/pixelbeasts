@@ -16,14 +16,14 @@
             @click="verifyIdentity"
             class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
           >
-            Verify Identity
+            Sign In with MetaMask ID
           </a>
         </div>
         <a v-else
-          @click="metaMaskSignin"
+          @click="metaMaskConnect"
           class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
         >
-          Signin with MetaMask
+          Connect with MetaMask
         </a>
       </div>
       <div v-else>
@@ -43,7 +43,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const isSiginedIn = computed(() => store.getters.isSiginedIn);
-    const metaMaskSignin = async () => {
+    const metaMaskConnect = async () => {
       await requestAccount(); // ethereum.on('accountsChanged') will handle the result
     };
     const verifyIdentity = async () => {
@@ -52,14 +52,11 @@ export default defineComponent({
       const result = await generateNonce({account});
       const nonce = result.data.nonce;
       const signature = await ethereum.request({ method: 'personal_sign', params: [nonce, account] });
-      alert(signature);
       const verifyNonce = functions.httpsCallable('verifyNonce');
       const result2 = await verifyNonce({account, signature});
       const token = result2.data.token; 
-      alert(token);
       const credential = await auth.signInWithCustomToken(token);
       const user = credential.user; 
-      alert(user);
     }
     const signOut = async () => {
       await auth.signOut();
@@ -71,7 +68,7 @@ export default defineComponent({
       account,
       isSiginedIn,
       hasMetaMask,
-      metaMaskSignin
+      metaMaskConnect
     }
   }
 });
