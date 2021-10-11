@@ -15,8 +15,10 @@ export const helloWorld = functions.https.onRequest((request, response) => {
   response.send("Hello from Firebase!");
 });
 
+// The user will see this message when MetaMask makes a "Signature Request"
+// to the user.
 const readableMessage = "PixelBeasts needs to verify your identity. " +
-                "Please sign this message. /n";
+                "Please sign this message. \n";
 
 export const generateNonce = functions.https.onCall(async (data, context) => {
   const refNonces = db.collection("nonces");
@@ -32,7 +34,8 @@ export const generateNonce = functions.https.onCall(async (data, context) => {
 export const verifyNonce = functions.https.onCall(async (data, context) => {
   const signature = data.signature;
   const account = data.account;
-  const message = data.nonce; // debug only
+  const uuid = data.uuid;
+  const message = readableMessage + uuid;
   const nonce = "\x19Ethereum Signed Message:\n" + message.length + message;
   const nonceBuffer = util.keccak(Buffer.from(nonce, "utf-8"));
   const {v, r, s} = util.fromRpcSig(signature);

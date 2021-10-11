@@ -75,7 +75,7 @@ export default defineComponent({
       console.log("verifyIdentity: uuid/nonce", uuid, nonce);
       const signature = await ethereum.request({ method: 'personal_sign', params: [nonce, account] });
       const verifyNonce = functions.httpsCallable('verifyNonce');
-      const result2 = await verifyNonce({account, signature, uuid, nonce}); // Note: this nonce is debugging
+      const result2 = await verifyNonce({account, signature, uuid});
       const token = result2.data.token; 
       console.log("verifyIdentity: token", token)
       const credential = await auth.signInWithCustomToken(token);
