@@ -8,10 +8,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, onMounted } from "vue";
+import { defineComponent, reactive, onMounted, computed } from "vue";
 import { useStore } from "vuex";
 
-import { db, auth } from "../utils/firebase";
+import { auth } from "../utils/firebase";
 import firebase from "firebase/app";
 
 interface User {
@@ -22,7 +22,7 @@ export default defineComponent({
   name: "Layout",
   async setup() {
     const store = useStore();
-    const account = store.state.account;
+    const account = computed(() => store.state.account);
     const user = reactive<User>({ user: null });
 
     onMounted(() => {
