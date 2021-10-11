@@ -5,7 +5,7 @@ import * as admin from "firebase-admin";
 if (!admin.apps.length) {
   admin.initializeApp();
 }
-// const db = admin.firestore();
+const db = admin.firestore();
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -18,8 +18,14 @@ export const helloWorld = functions.https.onRequest((request, response) => {
 const readableMessage = "PixelBeasts needs to verify your identity. " +
                 "Please sign this message. /n";
 
-export const generateNonce = functions.https.onCall((data, context) => {
-  const uuid = data.account;
+export const generateNonce = functions.https.onCall(async (data, context) => {
+  const refNonces = db.collection("nonces");
+  const newData = {
+    account: data.account,
+    created: admin.firestore.FieldValue.serverTimestamp(),
+  };
+  const refDoc = await refNonces.add(newData);
+  const uuid = refDoc.id;
   return {nonce: readableMessage + uuid, uuid};
 });
 
