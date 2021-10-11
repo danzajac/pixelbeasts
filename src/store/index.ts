@@ -15,7 +15,7 @@ export default createStore({
   },
   getters: {
     isSiginedIn: (state) => {
-      return state.account !== null && state.account !== undefined;
+      return state.user !== null && state.user !== undefined;
     },
   },
   actions: {},

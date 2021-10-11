@@ -31,6 +31,8 @@ export default defineComponent({
           console.log("authStateChanged:");
           user.user = fbuser;
           store.commit("setUser", user);
+        } else {
+          store.commit("setUser", null);
         }
       });
     });

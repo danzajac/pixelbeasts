@@ -1,24 +1,34 @@
 <template>
   <div class="account">
-    <div v-if="hasMetaMask">
-      <div v-if="account">
-        <p>{{ account }}</p>
-        <a 
-          @click="verifyIdentity"
-          class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
-        >
-          Verify Identity
-        </a>
-      </div>
-      <a v-else
-        @click="metaMaskSignin"
+    <div v-if="isSiginedIn">
+      <a 
+        @click="signOut"
         class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
       >
-        Signin with MetaMask
+        Sign Out
       </a>
     </div>
     <div v-else>
-      You need to have MetaMask extension installed to your browser.
+      <div v-if="hasMetaMask">
+        <div v-if="account">
+          <p>{{ account }}</p>
+          <a 
+            @click="verifyIdentity"
+            class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
+          >
+            Verify Identity
+          </a>
+        </div>
+        <a v-else
+          @click="metaMaskSignin"
+          class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
+        >
+          Signin with MetaMask
+        </a>
+      </div>
+      <div v-else>
+        You need to have MetaMask extension installed to your browser.
+      </div>
     </div>
   </div>
 </template>
@@ -32,6 +42,7 @@ export default defineComponent({
   name: "Account",
   setup() {
     const store = useStore();
+    const isSiginedIn = computed(() => store.getters.isSiginedIn);
     const metaMaskSignin = async () => {
       await requestAccount(); // ethereum.on('accountsChanged') will handle the result
     };
@@ -50,10 +61,15 @@ export default defineComponent({
       const user = credential.user; 
       alert(user);
     }
+    const signOut = async () => {
+      await auth.signOut();
+    }
     const account = computed(() => store.state.account);
     return {
+      signOut,
       verifyIdentity,
       account,
+      isSiginedIn,
       hasMetaMask,
       metaMaskSignin
     }
