@@ -1,7 +1,7 @@
 <template>
   <div class="layout">
     <template v-if="user.user">
-      {{ message.message }}! {{ user.user.displayName }}!!
+      {{ account }}
     </template>
     <router-view />
   </div>
@@ -22,6 +22,7 @@ export default defineComponent({
   name: "Layout",
   async setup() {
     const store = useStore();
+    const account = store.state.account;
     const user = reactive<User>({ user: null });
 
     onMounted(() => {
@@ -38,10 +39,9 @@ export default defineComponent({
     const messageDoc = await db.doc("/test/message").get();
     const message = messageDoc.data();
     */
-    const message = {message: "Hello"};
 
     return {
-      message,
+      account,
       user,
     };
   },
