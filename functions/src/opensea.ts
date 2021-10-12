@@ -8,7 +8,7 @@ export const fetchAsset = async (account: string, tokenId:string,
       "offset": String(0),
       "limit": String(40),
       collection,
-      tokenId};
+      "token_ids": tokenId};
   const query = Object.keys(params).map((key) => {
     return key+"="+encodeURIComponent(params[key]);
   });

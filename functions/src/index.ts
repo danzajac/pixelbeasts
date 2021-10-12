@@ -1,6 +1,7 @@
 import * as functions from "firebase-functions";
 import * as util from "ethereumjs-util";
 import * as admin from "firebase-admin";
+import {fetchAsset} from "./opensea";
 
 if (!admin.apps.length) {
   admin.initializeApp();
@@ -20,7 +21,18 @@ export const debug1 = functions.https.onCall(async (data, context) => {
     throw new functions.https.HttpsError("failed-precondition",
         "The function must be called while authenticated.");
   }
-  return {uid: context.auth.uid};
+  const tokenId = data.tokenId;
+  if (!tokenId) {
+    throw new functions.https.HttpsError("failed-precondition",
+        "The function requires tokenId.");
+  }
+  const asset = await fetchAsset(context.auth.uid, tokenId,
+      "beastopia-pixelbeasts");
+  if (!asset) {
+    throw new functions.https.HttpsError("failed-precondition",
+        "Invalid tokenId.");
+  }
+  return {uid: context.auth.uid, asset};
 });
 
 // The user will see this message when MetaMask makes a "Signature Request"
