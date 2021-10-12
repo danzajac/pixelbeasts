@@ -1,0 +1,48 @@
+[debug] [2021-10-12T06:47:04.341Z] ----------------------------------------------------------------------
+[debug] [2021-10-12T06:47:04.343Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only functions
+[debug] [2021-10-12T06:47:04.343Z] CLI Version:   9.19.0
+[debug] [2021-10-12T06:47:04.344Z] Platform:      darwin
+[debug] [2021-10-12T06:47:04.344Z] Node Version:  v14.16.1
+[debug] [2021-10-12T06:47:04.348Z] Time:          Mon Oct 11 2021 20:47:04 GMT-1000 (Hawaii-Aleutian Standard Time)
+[debug] [2021-10-12T06:47:04.348Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2021-10-12T06:47:04.398Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-10-12T06:47:04.398Z] > authorizing via signed-in user (satoshi.nakajima@gmail.com)
+[debug] [2021-10-12T06:47:04.399Z] [iam] checking project the-pixelbeasts for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2021-10-12T06:47:04.401Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/the-pixelbeasts:testIamPermissions  
+ {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2021-10-12T06:47:05.100Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Tue, 12 Oct 2021 06:47:05 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=171","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-10-12T06:47:05.102Z] >>> HTTP REQUEST POST https://iam.googleapis.com/v1/projects/the-pixelbeasts/serviceAccounts/the-pixelbeasts@appspot.gserviceaccount.com:testIamPermissions  
+ {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2021-10-12T06:47:05.585Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Tue, 12 Oct 2021 06:47:05 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] 
+[info] === Deploying to 'the-pixelbeasts'...
+[info] 
+[info] i  deploying functions 
+[info] Running command: npm --prefix "$RESOURCE_DIR" run lint
+[info] Running command: npm --prefix "$RESOURCE_DIR" run build
+[debug] [2021-10-12T06:47:15.773Z] ----------------------------------------------------------------------
+[debug] [2021-10-12T06:47:15.774Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only functions
+[debug] [2021-10-12T06:47:15.775Z] CLI Version:   9.19.0
+[debug] [2021-10-12T06:47:15.775Z] Platform:      darwin
+[debug] [2021-10-12T06:47:15.775Z] Node Version:  v14.16.1
+[debug] [2021-10-12T06:47:15.775Z] Time:          Mon Oct 11 2021 20:47:15 GMT-1000 (Hawaii-Aleutian Standard Time)
+[debug] [2021-10-12T06:47:15.775Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2021-10-12T06:47:15.826Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-10-12T06:47:15.826Z] > authorizing via signed-in user (satoshi.nakajima@gmail.com)
+[debug] [2021-10-12T06:47:15.826Z] [iam] checking project the-pixelbeasts for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2021-10-12T06:47:15.829Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/the-pixelbeasts:testIamPermissions  
+ {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2021-10-12T06:47:16.287Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Tue, 12 Oct 2021 06:47:16 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=194","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-10-12T06:47:16.292Z] >>> HTTP REQUEST POST https://iam.googleapis.com/v1/projects/the-pixelbeasts/serviceAccounts/the-pixelbeasts@appspot.gserviceaccount.com:testIamPermissions  
+ {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2021-10-12T06:47:16.847Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Tue, 12 Oct 2021 06:47:16 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] 
+[info] === Deploying to 'the-pixelbeasts'...
+[info] 
+[info] i  deploying functions 
+[info] Running command: npm --prefix "$RESOURCE_DIR" run lint
+[info] Running command: npm --prefix "$RESOURCE_DIR" run build
+[info] ✔  functions: Finished running predeploy script. 
+[debug] [2021-10-12T06:47:29.202Z] Validating nodejs source
