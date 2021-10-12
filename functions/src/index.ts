@@ -32,6 +32,8 @@ export const debug1 = functions.https.onCall(async (data, context) => {
     throw new functions.https.HttpsError("failed-precondition",
         "Invalid tokenId.");
   }
+  console.log("debug1 asset", asset.name, asset.token_id,
+      asset.collection.name);
   return {uid: context.auth.uid, asset};
 });
 

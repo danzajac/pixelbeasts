@@ -13,7 +13,9 @@ export const fetchAsset = async (account: string, tokenId:string,
     return key+"="+encodeURIComponent(params[key]);
   });
   const url = "https://api.opensea.io/api/v1/assets?"+query.join("&");
+  console.log("fetchAsset url", url);
   const json = await request(url, {});
   const assets = json["assets"];
+  console.log("fetchAsset assets.count", assets.length);
   return assets.length > 0 ? assets[0] : null;
 };

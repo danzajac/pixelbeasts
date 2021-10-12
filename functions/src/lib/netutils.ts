@@ -8,7 +8,7 @@ export const request = (_url: string, _options: any, postData?: any):
       {
         hostname: parsedURL.host,
         port: 443,
-        path: parsedURL.pathname,
+        path: parsedURL.path,
         method: "GET",
       },
       _options
