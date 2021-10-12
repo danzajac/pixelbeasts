@@ -27,14 +27,17 @@
           </div>
         </div>
         <div v-else>
-        <p class="m-4">This site is connected with the MetaMask extension.<br/> 
-          Please sign-in by signing a message from PixelBeasts.</p>
-          <a 
-            @click="verifyIdentity"
-            class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
-          >
-            Step 2: Sign In
-          </a>
+          <p class="m-4">This site is connected with the MetaMask extension.</p> 
+          <div v-if="isBusy">
+            {{ isBusy }}
+          </div>
+          <div v-else>
+            <p class="m-4">Please sign-in by signing a message from PixelBeasts.</p>
+            <a  @click="verifyIdentity"
+              class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white">
+              Step 2: Sign In
+            </a>
+          </div>
         </div>
       </div>
       <div v-else>
@@ -53,7 +56,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, ref } from "vue";
 import { useStore } from "vuex";
 import { hasMetaMask, requestAccount, ethereum } from "../utils/MetaMask";
 import { functions, auth } from "../utils/firebase";
@@ -63,11 +66,13 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const isSiginedIn = computed(() => store.getters.isSiginedIn);
+    const isBusy = ref("");
     const metaMaskConnect = async () => {
       await requestAccount(); // ethereum.on('accountsChanged') will handle the result
     };
     const verifyIdentity = async () => {
       // Step 1: We get a nonce from the server
+      isBusy.value = "Fetching a verification message from server...";
       const account = store.state.account;
       const generateNonce = functions.httpsCallable('generateNonce');
       const result = await generateNonce({account});
@@ -77,6 +82,7 @@ export default defineComponent({
 
       try {
         // Step 2: We ask the user to sign this nonce
+        isBusy.value = "Waiting for you to sign a message...";
         const signature = await ethereum.request({ method: 'personal_sign', params: [nonce, account] });
 
         // Step 3: We ask the server to verify the signature and get custom token
@@ -90,9 +96,12 @@ export default defineComponent({
         } else {
           alert("Failed to verifyIdenty")
         }
+        isBusy.value = "";
       } catch(e) {
+        isBusy.value = "Canceling the verification...";
         const deleteNonce = functions.httpsCallable('deleteNonce');
         const result2 = await deleteNonce({account, uuid});
+        isBusy.value = "";
       }
     };
     const signOut = async () => {
@@ -104,6 +113,7 @@ export default defineComponent({
     const account = computed(() => store.state.account);
     const assets = computed(() => store.state.assets);
     return {
+      isBusy,
       selectAsset,
       assets,
       signOut,
