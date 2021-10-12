@@ -15,6 +15,14 @@ export const helloWorld = functions.https.onRequest((request, response) => {
   response.send("Hello from Firebase!");
 });
 
+export const debug1 = functions.https.onCall(async (data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError("failed-precondition",
+        "The function must be called while authenticated.");
+  }
+  return {uid: context.auth.uid};
+});
+
 // The user will see this message when MetaMask makes a "Signature Request"
 // to the user.
 const readableMessage = "PixelBeasts needs to verify your identity. " +
