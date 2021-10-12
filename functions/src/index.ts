@@ -31,6 +31,19 @@ export const generateNonce = functions.https.onCall(async (data, context) => {
   return {nonce: readableMessage + uuid, uuid};
 });
 
+export const deleteNonce = functions.https.onCall(async (data, context) => {
+  const account = data.account;
+  const uuid = data.uuid;
+  const refNonce = db.collection("nonces").doc(uuid);
+  const doc = await refNonce.get();
+  const result = doc.data();
+  if (result?.account != account) {
+    return {"error": "no nonce in the database"};
+  }
+  await refNonce.delete();
+  return {"success": true};
+});
+
 export const verifyNonce = functions.https.onCall(async (data, context) => {
   const signature = data.signature;
   const account = data.account;

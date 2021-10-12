@@ -67,22 +67,32 @@ export default defineComponent({
       await requestAccount(); // ethereum.on('accountsChanged') will handle the result
     };
     const verifyIdentity = async () => {
+      // Step 1: We get a nonce from the server
       const account = store.state.account;
       const generateNonce = functions.httpsCallable('generateNonce');
       const result = await generateNonce({account});
       const nonce = result.data.nonce;
       const uuid = result.data.uuid;
       console.log("verifyIdentity: uuid/nonce", uuid, nonce);
-      const signature = await ethereum.request({ method: 'personal_sign', params: [nonce, account] });
-      const verifyNonce = functions.httpsCallable('verifyNonce');
-      const result2 = await verifyNonce({account, signature, uuid});
-      const token = result2.data.token; 
-      console.log("verifyIdentity: token", token)
-      if (token) {
-        const credential = await auth.signInWithCustomToken(token);
-        const user = credential.user; 
-      } else {
-        alert("Failed to verifyIdenty")
+
+      try {
+        // Step 2: We ask the user to sign this nonce
+        const signature = await ethereum.request({ method: 'personal_sign', params: [nonce, account] });
+
+        // Step 3: We ask the server to verify the signature and get custom token
+        const verifyNonce = functions.httpsCallable('verifyNonce');
+        const result2 = await verifyNonce({account, signature, uuid});
+        const token = result2.data.token; 
+        console.log("verifyIdentity: token", token)
+        if (token) {
+          const credential = await auth.signInWithCustomToken(token);
+          const user = credential.user; 
+        } else {
+          alert("Failed to verifyIdenty")
+        }
+      } catch(e) {
+        const deleteNonce = functions.httpsCallable('deleteNonce');
+        const result2 = await deleteNonce({account, uuid});
       }
     };
     const signOut = async () => {
