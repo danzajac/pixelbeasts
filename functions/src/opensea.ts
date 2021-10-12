@@ -3,7 +3,7 @@ import {request} from "./lib/netutils";
 export const fetchAsset = async (account: string, tokenId:string,
     collection: string) => {
   const params: Record<string, string> =
-    {"owner": String(account),
+    {"owner": account,
       "order_direction": "desc",
       "offset": String(0),
       "limit": String(40),
