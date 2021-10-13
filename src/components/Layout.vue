@@ -32,6 +32,7 @@ export default defineComponent({
           store.commit("setUser", reactive<User>({ user: user }));
           const assets = fetchAssets(store.state.account, "beastopia-pixelbeasts").then(assets => {
             store.commit('setAssets', assets);
+            store.commit('setAssetIndex', 0);
           })
         } else {
           store.commit("setUser", null);

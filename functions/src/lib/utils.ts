@@ -10,16 +10,16 @@ export const validateAuth = (context: functions.https.CallableContext) => {
 };
 
 export const validateNFT = async (context: functions.https.CallableContext,
-    collectinoId: string, tokenId: string) => {
+    collectionId: string, tokenId: string) => {
   const uid = validateAuth(context);
-  if (!tokenId) {
+  if (!collectionId || !tokenId) {
     throw new functions.https.HttpsError("failed-precondition",
         "The function requires tokenId.");
   }
-  const asset = await fetchAsset(uid, collectinoId, tokenId);
+  const asset = await fetchAsset(uid, collectionId, tokenId);
   if (!asset || asset.token_id != tokenId) {
     throw new functions.https.HttpsError("failed-precondition",
         "Invalid tokenId.");
   }
-  return {uid, tokenId};
+  return {uid, collectionId, tokenId};
 };

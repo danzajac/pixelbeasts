@@ -7,6 +7,7 @@ if (!admin.apps.length) {
   admin.initializeApp();
 }
 const db = admin.firestore();
+const auth = admin.auth();
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -17,9 +18,16 @@ export const helloWorld = functions.https.onRequest((request, response) => {
 });
 
 export const debug1 = functions.https.onCall(async (data, context) => {
-  const {uid, tokenId} = await validateNFT(context,
+  const {uid, collectionId, tokenId} = await validateNFT(context,
       "beastopia-pixelbeasts", data.tokenId);
-  return {uid: uid, tokenId};
+  return {uid, collectionId, tokenId};
+});
+
+export const selectNFT = functions.https.onCall(async (data, context) => {
+  const {uid, collectionId, tokenId} = await validateNFT(context,
+      data.collectionId, data.tokenId);
+  await auth.setCustomUserClaims(uid, {collectionId, tokenId});
+  return {uid, collectionId, tokenId};
 });
 
 // The user will see this message when MetaMask makes a "Signature Request"
