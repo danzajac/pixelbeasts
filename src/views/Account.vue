@@ -2,7 +2,10 @@
   <div class="account">
     <div v-if="hasMetaMask">
       <div v-if="account">
-        <div class="border-2 p-2 m-2">{{ account }}</div>
+        <div class="border-2 p-2 m-2">
+          <p>This site is connected with the MetaMask extension.</p> 
+          {{ account }}
+        </div>
         <div v-if="isSiginedIn">
           <p class="m-4">You are signed-in with your MetaMask identity.
                       <a 
@@ -27,7 +30,6 @@
           </div>
         </div>
         <div v-else>
-          <p class="m-4">This site is connected with the MetaMask extension.</p> 
           <div v-if="isBusy">
             {{ isBusy }}
           </div>
