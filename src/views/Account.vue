@@ -16,9 +16,9 @@
           <div v-if="assets">
             <div v-for="(asset, index) in assets" :key="asset.id">
               <a @click="()=>{selectAsset(index)}"
-            class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center px-6 rounded-lg hover:bg-green-600 hover:text-white">
-              {{ asset.name }} 
-              <img :src="asset.image_thumbnail_url" />
+            class="m-2 bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center px-6 rounded-lg hover:bg-green-600 hover:text-white">
+              <span>{{ asset.name }}</span>
+              <img :src="asset.image_thumbnail_url" class="m-2 w-20" />
               </a>
             </div>
           </div>
