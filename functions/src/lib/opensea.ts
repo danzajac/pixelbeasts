@@ -1,7 +1,7 @@
-import {request} from "./lib/netutils";
+import {request} from "./netutils";
 
-export const fetchAsset = async (account: string, tokenId:string,
-    collection: string) => {
+export const fetchAsset = async (account: string, collection: string,
+    tokenId:string) => {
   const params: Record<string, string> =
     {"owner": account,
       "order_direction": "desc",

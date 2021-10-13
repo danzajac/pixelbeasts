@@ -1,4 +1,6 @@
+import { assert } from "@vue/compiler-core";
 import { createStore } from "vuex";
+import { functions, auth } from "../utils/firebase";
 
 export default createStore({
   state: {
@@ -19,6 +21,15 @@ export default createStore({
     },
     setAssetIndex(state, index) {
       state.assetIndex = index;
+      if (state.assets.length > state.assetIndex) {
+        const asset = state.assets[state.assetIndex];
+        const selectNFT = functions.httpsCallable('selectNFT');
+        selectNFT({account: state.account, 
+          collectionId: "beastopia-pixelbeasts", 
+          tokenId: asset["token_id"]}).then((result) => {
+            console.log(result);
+          });
+      }
     }
   },
   getters: {

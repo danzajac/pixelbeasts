@@ -1,13 +1,36 @@
 rules_version = '2';
 
+// custom claims
+// collectionId: id of the NFT collection that the user has chosen
+// tokenId: token_id of the NFT that the user has chosen 
+
+function hasCollection(request, collectionId) {
+  return request.auth.token.collectionId == collectionId
+}
+
+function hasNFT(request, collectionId, tokenId) {
+  return request.auth.token.collectionId == collectionId
+      && request.auth.token.tokenId == tokenId
+}
+
 service cloud.firestore {
   match /databases/{database}/documents {
     match /nonces/{nonceId} {
       allow read, write: if false; // server-only
     }
-    match /test/{testId} {
-      allow read;
-      allow create, delete, update: if false;
+    match /collections/{collectionId} {
+      match /rooms/{roomId} {
+        match /messasges/{messageId} {
+          allow read: if hasCollection(request, collectionId);
+          allow write: if false; // server needs to verify the ownership in real time.
+        }
+      }
+      match /users/{tokenId} {
+        match /messasges/{messageId} {
+          allow read: if hasNFT(request, collectionId, tokenId);
+          allow write: if false; // server needs to verify the ownership in real time.
+        }
+      }
     }
     match /{document=**} {
       allow read, write: if false;

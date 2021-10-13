@@ -109,7 +109,7 @@ export default defineComponent({
     const signOut = async () => {
       await auth.signOut();
     };
-    const selectAsset = (index: number) => {
+    const selectAsset = async (index: number) => {
       store.commit('setAssetIndex', index);
     };
     const account = computed(() => store.state.account);
