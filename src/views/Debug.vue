@@ -1,11 +1,9 @@
 <template>
   <div class="about">
-    Debug {{ account }}
     <a @click="debug1"
         class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center px-6 rounded-lg hover:bg-green-600 hover:text-white">
-      Debug 
+      Verify 
     </a>
-
   </div>
 </template>
 
@@ -20,20 +18,14 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const account = computed(() => store.state.account);
-    const assets = computed(() => store.state.assets);
+    const asset = computed(() => store.getters.asset);
     const debug1 = async () => {
       const debug1 = functions.httpsCallable('debug1');
-      const asset = store.state.assets[0];
-      console.log(asset.image_url);
-      const tokenId = asset.token_id;
-      console.log(tokenId);
-      const result = await debug1({account, tokenId});
-      console.log(result.data.asset.image_url);
+      const result = await debug1({account, tokenId:asset.value.token_id});
+      console.log(result.data);
     };
     return {
       debug1,
-      assets,
-      account,
     }
   }
 });
