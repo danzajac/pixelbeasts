@@ -20,9 +20,13 @@ export default defineComponent({
     const account = computed(() => store.state.account);
     const asset = computed(() => store.getters.asset);
     const debug1 = async () => {
-      const debug1 = functions.httpsCallable('debug1');
-      const result = await debug1({account, tokenId:asset.value.token_id});
-      console.log(result.data);
+      try {
+        const debug1 = functions.httpsCallable('debug1');
+        const result = await debug1({account, tokenId:asset.value.token_id});
+        alert("success!");
+      } catch(e) {
+        alert(e);
+      }
     };
     return {
       debug1,

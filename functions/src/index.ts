@@ -28,7 +28,7 @@ export const debug1 = functions.https.onCall(async (data, context) => {
   }
   const asset = await fetchAsset(context.auth.uid, tokenId,
       "beastopia-pixelbeasts");
-  if (!asset) {
+  if (!asset || asset.token_id != tokenId) {
     throw new functions.https.HttpsError("failed-precondition",
         "Invalid tokenId.");
   }
