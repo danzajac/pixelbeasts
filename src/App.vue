@@ -1,10 +1,12 @@
 <template>
+  <img style="position:absolute" v-if="asset" class="w-16" :src="asset.image_thumbnail_url" />
   <div id="nav">
     <template v-if="isSiginedIn">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
       <router-link to="/debug">Debug</router-link> |
-      <router-link to="/account">Account</router-link>
+      <router-link to="/account">
+      </router-link>
     </template>
     <template v-else>
       <router-link to="/">Home</router-link> |
@@ -26,6 +28,8 @@ export default {
   setup() {
     document.title = "Pixel Beasts"; // There might be a better way to do this, but it works.
     const store = useStore();
+    const asset = computed(() => store.getters.asset);
+
     getAccount().then((value) => {
       store.commit('setAccount', value);
     });
@@ -43,6 +47,7 @@ export default {
 
     return {
       isSiginedIn,
+      asset
     };
   },
 };
