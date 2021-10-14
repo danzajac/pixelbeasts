@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-import { functions } from "../utils/firebase";
+import { auth, functions } from "../utils/firebase";
 
 export default createStore({
   state: {
@@ -29,10 +29,13 @@ export default createStore({
           collectionId: "beastopia-pixelbeasts", 
           tokenId }).then((result) => {
             // console.log(result.data);
-            const debug1 = functions.httpsCallable('debug1');
-            debug1({account: state.account, tokenId}).then((result)=>{
-              console.log("debug1", result.data.token.tokenId, result.data.token.collectionId);
-            });
+            auth.currentUser?.getIdToken(true).then((result) => {
+              console.log(result)
+              const debug1 = functions.httpsCallable('debug1');
+              debug1({account: state.account, tokenId}).then((result)=>{
+                console.log("debug1", result.data.token.tokenId, result.data.token.collectionId);
+              });
+          });
         });
       }
     }

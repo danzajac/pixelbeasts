@@ -21,7 +21,7 @@ export const debug1 = functions.https.onCall(async (data, context) => {
   const {uid, collectionId, tokenId} = await validateNFT(context,
       "beastopia-pixelbeasts", data.tokenId);
   const token = context.auth?.token;
-  console.log("### debug1", token?.collectionId, token?.tokenId);
+  console.log("### debug1", token?.collectionId, token?.tokenId, uid);
   return {uid, collectionId, tokenId, token,
     flag: data.tokenId == token?.tokenId};
 });
@@ -32,7 +32,7 @@ export const selectNFT = functions.https.onCall(async (data, context) => {
   const refAccount = db.doc(`accounts/${uid}`);
   await refAccount.set({collectionId, tokenId,
     selected: admin.firestore.FieldValue.serverTimestamp()});
-  console.log("### selectNFT 1", collectionId, tokenId);
+  console.log("### selectNFT 1", collectionId, tokenId, uid);
   await auth.setCustomUserClaims(uid, {collectionId, tokenId});
   const updated = await admin.auth().getUser(uid);
   console.log("### selectNFT 2", updated.customClaims);
