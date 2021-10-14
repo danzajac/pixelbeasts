@@ -50,9 +50,9 @@ export const deleteNonce = functions.https.onCall(async (data, context) => {
   const account = data.account;
   const uuid = data.uuid;
   const refNonce = db.collection("nonces").doc(uuid);
-  const doc = await refNonce.get();
-  const result = doc.data();
-  if (result?.account != account) {
+  const nonceDoc = await refNonce.get();
+  const nonceData = nonceDoc.data();
+  if (nonceData?.account != account) {
     return {"error": "no nonce in the database"};
   }
   await refNonce.delete();
@@ -71,10 +71,10 @@ export const verifyNonce = functions.https.onCall(async (data, context) => {
   const account = util.bufferToHex(addrBuf);
 
   const refNonce = db.collection("nonces").doc(uuid);
-  const doc = await refNonce.get();
-  const result = doc.data();
+  const nonceDoc = await refNonce.get();
+  const nonceData = nonceDoc.data();
   await refNonce.delete();
-  if (result?.account != account) {
+  if (nonceData?.account != account) {
     return {"error": "no nonce in the database"};
   }
 
