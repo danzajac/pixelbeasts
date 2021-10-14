@@ -50,9 +50,9 @@ export const deleteNonce = functions.https.onCall(async (data, context) => {
   const account = data.account;
   const uuid = data.uuid;
   const refNonce = db.collection("nonces").doc(uuid);
-  const doc = await refNonce.get();
-  const result = doc.data();
-  if (result?.account != account) {
+  const nonceDoc = await refNonce.get();
+  const nonceData = nonceDoc.data();
+  if (nonceData?.account != account) {
     return {"error": "no nonce in the database"};
   }
   await refNonce.delete();
@@ -61,27 +61,24 @@ export const deleteNonce = functions.https.onCall(async (data, context) => {
 
 export const verifyNonce = functions.https.onCall(async (data, context) => {
   const signature = data.signature;
-  const account = data.account;
   const uuid = data.uuid;
-  const refNonce = db.collection("nonces").doc(uuid);
-  const doc = await refNonce.get();
-  const result = doc.data();
-  if (result?.account != account) {
-    return {"error": "no nonce in the database"};
-  }
-  await refNonce.delete();
   const message = readableMessage + uuid;
   const nonce = "\x19Ethereum Signed Message:\n" + message.length + message;
   const nonceBuffer = util.keccak(Buffer.from(nonce, "utf-8"));
   const {v, r, s} = util.fromRpcSig(signature);
   const pubKey = util.ecrecover(util.toBuffer(nonceBuffer), v, r, s);
   const addrBuf = util.pubToAddress(pubKey);
-  const addr = util.bufferToHex(addrBuf);
-  if (account == addr) {
-    const auth = admin.auth();
-    const token = await auth.createCustomToken(account);
-    return {token};
-  } else {
-    return {"error": "mismatch"};
+  const account = util.bufferToHex(addrBuf);
+
+  const refNonce = db.collection("nonces").doc(uuid);
+  const nonceDoc = await refNonce.get();
+  const nonceData = nonceDoc.data();
+  await refNonce.delete();
+  if (nonceData?.account != account) {
+    return {"error": "no nonce in the database"};
   }
+
+  const auth = admin.auth();
+  const token = await auth.createCustomToken(account);
+  return {token};
 });
