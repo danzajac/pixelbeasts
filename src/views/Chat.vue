@@ -23,6 +23,7 @@ class="m-2 bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-cent
 <script lang="ts">
 import { defineComponent, computed, ref } from "vue";
 import { useStore } from "vuex";
+import { db } from "../utils/firebase";
 
 export default defineComponent({
   name: "Account",
@@ -33,8 +34,12 @@ export default defineComponent({
     const setCreating = (flag: boolean) => {
       isCreating.value = flag;
     };
-    const Create = () => {
-        alert("create");
+    const Create = async () => {
+        const collectinoId = "beastopia-pixelbeasts";
+        const refRooms = db.collection(`collections/${collectinoId}/rooms`);
+        alert(asset.value.token_id);
+        const doc = await refRooms.add({name:"foo1", owner: asset.value.token_id});
+        console.log(doc.id);
     }
     return {
       isCreating,

@@ -23,6 +23,7 @@ export default defineComponent({
       try {
         const debug1 = functions.httpsCallable('debug1');
         const result = await debug1({account, tokenId:asset.value.token_id});
+        console.log(result.data);
         alert("success!");
       } catch(e) {
         alert(e);
