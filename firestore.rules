@@ -13,6 +13,16 @@ function hasNFT(request, collectionId, tokenId) {
       && request.auth.token.tokenId == tokenId
 }
 
+function isRequestOwner(request) {
+  return request.auth.uid == request.resource.data.uid
+    && request.auth.token.tokenId == request.resource.data.tokenId;  
+}
+
+function isResourceOwner(request, resource) {
+  return request.auth.uid == resource.data.uid
+    && request.auth.token.tokenId == resource.data.tokenId;  
+}
+
 service cloud.firestore {
   match /databases/{database}/documents {
     match /accounts/{uid} {
@@ -25,12 +35,19 @@ service cloud.firestore {
       match /rooms/{roomId} {
         allow read: if hasCollection(request, collectionId);
         allow create: if hasCollection(request, collectionId) 
-            && request.resource.data.owner == request.auth.token.tokenId; // needs to become an owner.
-        allow update, delete: if hasCollection(request, collectionId)
-            && resource.data.owner == request.auth.token.tokenId; // only owner can delete it.
+            && isRequestOwner(request);
+        allow update: if hasCollection(request, collectionId)
+            && isRequestOwner(request) && isResourceOwner(request, resource);
+        allow delete: if hasCollection(request, collectionId)
+            && isResourceOwner(request, resource);
         match /messasges/{messageId} {
           allow read: if hasCollection(request, collectionId);
-          allow write: if false; // server needs to verify the ownership in real time.
+          allow create: if hasCollection(request, collectionId) 
+              && isRequestOwner(request);
+          allow update: if hasCollection(request, collectionId)
+              && isRequestOwner(request) && isResourceOwner(request, resource);
+          allow delete: if hasCollection(request, collectionId)
+              && isResourceOwner(request, resource);
         }
       }
       match /users/{tokenId} {

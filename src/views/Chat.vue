@@ -18,7 +18,8 @@ class="m-2 bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-cent
     </a>
     <div v-for="room in rooms" :key="room.id">
       {{ room.name }}
-      {{ room.owner }}
+      {{ room.tokenId }}
+      {{ room.uid }}
     </div>
   </div>
 </template>
@@ -47,12 +48,15 @@ export default defineComponent({
 
     const Create = async () => {
         const timestamp =  firestore.FieldValue.serverTimestamp();
-        const doc = await refRooms.add({
+        const data = {
           name:"Room 2",
           created: timestamp,
           updated: timestamp,
-          owner: asset.value.token_id
-        });
+          uid: store.state.account,
+          tokenId: asset.value.token_id
+        };
+        console.log(data);
+        const doc = await refRooms.add(data);
         isCreating.value = false;
         console.log(doc.id);
     }
