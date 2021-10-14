@@ -18,6 +18,7 @@ class="m-2 bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-cent
     </a>
     <div v-for="room in rooms" :key="room.id">
       {{ room.name }}
+      {{ room.owner }}
     </div>
   </div>
 </template>
@@ -25,7 +26,7 @@ class="m-2 bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-cent
 <script lang="ts">
 import { defineComponent, computed, ref } from "vue";
 import { useStore } from "vuex";
-import { db } from "../utils/firebase";
+import { db, firestore } from "../utils/firebase";
 
 export default defineComponent({
   name: "Account",
@@ -45,9 +46,11 @@ export default defineComponent({
     });
 
     const Create = async () => {
+        const timestamp =  firestore.FieldValue.serverTimestamp();
         const doc = await refRooms.add({
-          name:"foo1",
-          updated: 1,
+          name:"Room 2",
+          created: timestamp,
+          updated: timestamp,
           owner: asset.value.token_id
         });
         isCreating.value = false;
