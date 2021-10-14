@@ -5,6 +5,7 @@
       Verify 
     </a>
   </div>
+            {{ asset.token_id }}
 </template>
 
 <script lang="ts">
@@ -31,6 +32,7 @@ export default defineComponent({
       }
     };
     return {
+      asset,
       debug1,
     }
   }

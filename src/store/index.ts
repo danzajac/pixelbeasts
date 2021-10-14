@@ -26,7 +26,7 @@ export default createStore({
         selectNFT({account: state.account, 
           collectionId: "beastopia-pixelbeasts", 
           tokenId: asset["token_id"]}).then((result) => {
-            console.log(result);
+            console.log(result.data);
           });
       }
     }

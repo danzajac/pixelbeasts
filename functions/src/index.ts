@@ -30,10 +30,12 @@ export const selectNFT = functions.https.onCall(async (data, context) => {
   const refAccount = db.doc(`accounts/${uid}`);
   await refAccount.set({collectionId, tokenId,
     selected: admin.firestore.FieldValue.serverTimestamp()});
-  // await auth.setCustomUserClaims(uid, {collectionId, tokenId});
+  console.log("selectNFT", collectionId, tokenId);
+  await auth.setCustomUserClaims(uid, {collectionId, tokenId});
   return {uid, collectionId, tokenId};
 });
 
+/*
 export const accountUpdated = functions.firestore.document("/accounts/{uid}")
     .onWrite(async (change, context) => {
       const uid = context.params.uid;
@@ -42,6 +44,7 @@ export const accountUpdated = functions.firestore.document("/accounts/{uid}")
       await auth.setCustomUserClaims(uid,
           {collectionId: data?.collectionId, tokenId: data?.tokenId});
     });
+*/
 
 // The user will see this message when MetaMask makes a "Signature Request"
 // to the user.
