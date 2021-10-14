@@ -30,8 +30,10 @@ export const selectNFT = functions.https.onCall(async (data, context) => {
   const refAccount = db.doc(`accounts/${uid}`);
   await refAccount.set({collectionId, tokenId,
     selected: admin.firestore.FieldValue.serverTimestamp()});
-  console.log("selectNFT", collectionId, tokenId);
+  console.log("### selectNFT 1", collectionId, tokenId);
   await auth.setCustomUserClaims(uid, {collectionId, tokenId});
+  const updated = await admin.auth().getUser(uid);
+  console.log("### selectNFT 2", updated.customClaims);
   return {uid, collectionId, tokenId};
 });
 

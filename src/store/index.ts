@@ -31,7 +31,7 @@ export default createStore({
             // console.log(result.data);
             const debug1 = functions.httpsCallable('debug1');
             debug1({account: state.account, tokenId}).then((result)=>{
-              console.log("debug1", result.data.token.tokenId);
+              console.log("debug1", result.data.token.tokenId, result.data.token.collectionId);
             });
         });
       }
