@@ -3,12 +3,16 @@
     <h1 class="text-4xl font-bold my-6">{{ asset.token_id }}</h1>
     <div v-if="isCreating">
         Creating...
-        <a @click="() => {newRoom(false)}"
+        <a @click="Create"
+    class="m-2 bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center px-6 rounded-lg hover:bg-green-600 hover:text-white">
+        <span>Create</span>
+        </a>
+        <a @click="() => {setCreating(false)}"
     class="m-2 bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center px-6 rounded-lg hover:bg-green-600 hover:text-white">
         <span>Cancel</span>
         </a>
     </div>
-    <a v-else @click="() => {newRoom(true)}"
+    <a v-else @click="() => {setCreating(true)}"
 class="m-2 bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center px-6 rounded-lg hover:bg-green-600 hover:text-white">
     <span>New Room</span>
     </a>
@@ -26,13 +30,17 @@ export default defineComponent({
     const store = useStore();
     const asset = computed(() => store.getters.asset);
     const isCreating = ref(false);
-    const newRoom = (flag: boolean) => {
+    const setCreating = (flag: boolean) => {
       isCreating.value = flag;
     };
+    const Create = () => {
+        alert("create");
+    }
     return {
       isCreating,
       asset,
-      newRoom,
+      setCreating,
+      Create,
     }
   }
 });
