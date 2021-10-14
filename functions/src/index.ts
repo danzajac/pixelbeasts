@@ -73,11 +73,10 @@ export const verifyNonce = functions.https.onCall(async (data, context) => {
   const refNonce = db.collection("nonces").doc(uuid);
   const doc = await refNonce.get();
   const result = doc.data();
-  if (result?.account != account) {
-    return {"error": "no nonce in the database",
-      "account": account, "db": result?.account};
-  }
   await refNonce.delete();
+  if (result?.account != account) {
+    return {"error": "no nonce in the database"};
+  }
 
   const auth = admin.auth();
   const token = await auth.createCustomToken(account);
