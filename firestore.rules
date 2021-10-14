@@ -15,11 +15,19 @@ function hasNFT(request, collectionId, tokenId) {
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    match /accounts/{uid} {
+      allow read, write: if false; // server-only
+    }
     match /nonces/{nonceId} {
       allow read, write: if false; // server-only
     }
     match /collections/{collectionId} {
       match /rooms/{roomId} {
+        allow read: if hasCollection(request, collectionId);
+        allow create: if hasCollection(request, collectionId) 
+            && request.resource.data.owner == request.auth.token.tokenId; // needs to become an owner.
+        allow update, delete: if hasCollection(request, collectionId)
+            && resource.data.owner == request.auth.token.tokenId; // only owner can delete it.
         match /messasges/{messageId} {
           allow read: if hasCollection(request, collectionId);
           allow write: if false; // server needs to verify the ownership in real time.

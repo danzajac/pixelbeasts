@@ -4,6 +4,7 @@
     <template v-if="isSiginedIn">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
+      <router-link to="/chat">Chat</router-link> |
       <router-link to="/debug">Debug</router-link> |
       <router-link to="/account">Account</router-link>
     </template>

@@ -10,8 +10,7 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
-import { hasMetaMask, requestAccount, ethereum } from "../utils/MetaMask";
-import { functions, auth } from "../utils/firebase";
+import { functions } from "../utils/firebase";
 
 export default defineComponent({
   name: "Account",
@@ -22,7 +21,10 @@ export default defineComponent({
     const debug1 = async () => {
       try {
         const debug1 = functions.httpsCallable('debug1');
+        console.log(asset.value.token_id);
         const result = await debug1({account, tokenId:asset.value.token_id});
+        console.log(result.data);
+        console.log("custome claims", result.data.token);
         alert("success!");
       } catch(e) {
         alert(e);

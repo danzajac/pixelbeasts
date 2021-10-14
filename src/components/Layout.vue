@@ -30,7 +30,7 @@ export default defineComponent({
         if (user) {
           console.log("authStateChanged:");
           store.commit("setUser", reactive<User>({ user: user }));
-          const assets = fetchAssets(store.state.account, "beastopia-pixelbeasts").then(assets => {
+          fetchAssets(store.state.account, "beastopia-pixelbeasts").then(assets => {
             store.commit('setAssets', assets);
             store.commit('setAssetIndex', 0);
           })

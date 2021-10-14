@@ -80,6 +80,7 @@ export default defineComponent({
       const result = await generateNonce({account});
       const nonce = result.data.nonce;
       const uuid = result.data.uuid;
+
       console.log("verifyIdentity: uuid/nonce", uuid, nonce);
 
       try {
@@ -94,8 +95,7 @@ export default defineComponent({
         const token = result2.data.token; 
         console.log("verifyIdentity: token", token)
         if (token) {
-          const credential = await auth.signInWithCustomToken(token);
-          const user = credential.user; 
+          await auth.signInWithCustomToken(token);
         } else {
           alert("Failed to verifyIdenty")
         }
@@ -103,7 +103,7 @@ export default defineComponent({
       } catch(e) {
         isBusy.value = "Canceling the verification...";
         const deleteNonce = functions.httpsCallable('deleteNonce');
-        const result2 = await deleteNonce({account, uuid});
+        await deleteNonce({account, uuid});
         isBusy.value = "";
       }
     };
