@@ -23,11 +23,17 @@ export default createStore({
       if (state.user && state.assets.length > state.assetIndex) {
         const asset = state.assets[state.assetIndex];
         const selectNFT = functions.httpsCallable('selectNFT');
+        const tokenId = asset["token_id"];
+        console.log("selectNFT", tokenId);
         selectNFT({account: state.account, 
           collectionId: "beastopia-pixelbeasts", 
-          tokenId: asset["token_id"]}).then((result) => {
-            console.log(result.data);
-          });
+          tokenId }).then((result) => {
+            // console.log(result.data);
+            const debug1 = functions.httpsCallable('debug1');
+            debug1({account: state.account, tokenId}).then((result)=>{
+              console.log("debug1", result.data.token.tokenId);
+            });
+        });
       }
     }
   },
