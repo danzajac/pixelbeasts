@@ -89,7 +89,8 @@ export default defineComponent({
 
         // Step 3: We ask the server to verify the signature and get custom token
         const verifyNonce = functions.httpsCallable('verifyNonce');
-        const result2 = await verifyNonce({account, signature, uuid});
+        const result2 = await verifyNonce({signature, uuid});
+        console.log(result2.data);
         const token = result2.data.token; 
         console.log("verifyIdentity: token", token)
         if (token) {
