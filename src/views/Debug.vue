@@ -5,14 +5,12 @@
       Verify 
     </a>
   </div>
-            {{ asset.token_id }}
 </template>
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
-import { hasMetaMask, requestAccount, ethereum } from "../utils/MetaMask";
-import { functions, auth } from "../utils/firebase";
+import { functions } from "../utils/firebase";
 
 export default defineComponent({
   name: "Account",
@@ -33,7 +31,6 @@ export default defineComponent({
       }
     };
     return {
-      asset,
       debug1,
     }
   }

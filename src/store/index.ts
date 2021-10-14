@@ -31,10 +31,6 @@ export default createStore({
             // console.log(result.data);
             auth.currentUser?.getIdToken(true).then((result) => {
               console.log(result)
-              const debug1 = functions.httpsCallable('debug1');
-              debug1({account: state.account, tokenId}).then((result)=>{
-                console.log("debug1", result.data.token.tokenId, result.data.token.collectionId);
-              });
           });
         });
       }

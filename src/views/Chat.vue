@@ -37,8 +37,8 @@ export default defineComponent({
     const Create = async () => {
         const collectinoId = "beastopia-pixelbeasts";
         const refRooms = db.collection(`collections/${collectinoId}/rooms`);
-        alert(asset.value.token_id);
         const doc = await refRooms.add({name:"foo1", owner: asset.value.token_id});
+        isCreating.value = false;
         console.log(doc.id);
     }
     return {

@@ -24,7 +24,6 @@
               <img :src="asset.image_thumbnail_url" class="m-2 w-20" />
               </a>
             </div>
-            {{ asset.token_id }}
           </div>
           <div v-else>
             <p>Fetching assets...</p>
@@ -70,7 +69,6 @@ export default defineComponent({
     const store = useStore();
     const isSiginedIn = computed(() => store.getters.isSiginedIn);
     const isBusy = ref("");
-    const asset = computed(() => store.getters.asset); // debugging
     const metaMaskConnect = async () => {
       await requestAccount(); // ethereum.on('accountsChanged') will handle the result
     };
@@ -118,7 +116,6 @@ export default defineComponent({
     const account = computed(() => store.state.account);
     const assets = computed(() => store.state.assets);
     return {
-      asset,
       isBusy,
       selectAsset,
       assets,
