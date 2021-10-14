@@ -20,8 +20,10 @@ export const helloWorld = functions.https.onRequest((request, response) => {
 export const debug1 = functions.https.onCall(async (data, context) => {
   const {uid, collectionId, tokenId} = await validateNFT(context,
       "beastopia-pixelbeasts", data.tokenId);
-  return {uid, collectionId, tokenId, token: context.auth?.token,
-    flag: data.tokenId == context.auth?.token.tokenId};
+  const token = context.auth?.token;
+  console.log("### debug1", token?.collectionId, token?.tokenId);
+  return {uid, collectionId, tokenId, token,
+    flag: data.tokenId == token?.tokenId};
 });
 
 export const selectNFT = functions.https.onCall(async (data, context) => {
