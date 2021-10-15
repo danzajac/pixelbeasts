@@ -40,7 +40,7 @@ service cloud.firestore {
             && isRequestOwner(request) && isResourceOwner(request, resource);
         allow delete: if hasCollection(request, collectionId)
             && isResourceOwner(request, resource);
-        match /messasges/{messageId} {
+        match /messages/{messageId} {
           allow read: if hasCollection(request, collectionId);
           allow create: if hasCollection(request, collectionId) 
               && isRequestOwner(request);
