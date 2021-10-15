@@ -1,7 +1,7 @@
 <template>
   <div class="about">
     <div v-for="room in rooms" :key="room.id">
-      {{ room.name }}
+      {{ room.tokenId }} {{ room.name }}
       <span v-if="room.mine">
         <a @click="()=>DeleteMessage(room.id)"
           id="button">
