@@ -38,14 +38,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, reactive } from "vue";
+import { defineComponent, computed, ref, reactive, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import { db, firestore } from "../utils/firebase";
 
 import Room from "@/models/room";
 
 export default defineComponent({
-  name: "Account",
+  name: "Chat",
   setup() {
     const store = useStore();
     const asset = computed(() => store.getters.asset);
@@ -66,6 +66,7 @@ export default defineComponent({
         rooms.push(room);
       });
     });
+    onUnmounted(detatcher);
 
     const CreateRoom = async () => {
       const timestamp = firestore.FieldValue.serverTimestamp();
@@ -78,7 +79,7 @@ export default defineComponent({
         name: asset.value.name,
       };
       console.log(data);
-      const doc = await refRooms.add(data);
+      await refRooms.add(data);
       isCreating.value = false;
       name.value = "";
     };

@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, reactive } from "vue";
+import { defineComponent, computed, ref, reactive, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { db, firestore } from "../utils/firebase";
@@ -51,6 +51,7 @@ export default defineComponent({
         // TODO modified if need
       });
     });
+    onUnmounted(detatcher);
 
     const PostMessage = async () => {
       const timestamp = firestore.FieldValue.serverTimestamp();
