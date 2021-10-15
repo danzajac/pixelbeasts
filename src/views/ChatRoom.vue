@@ -1,9 +1,9 @@
 <template>
   <div class="about">
-    <div v-for="room in rooms" :key="room.id">
-      {{ room.name }} {{ room.message }}
-      <span v-if="room.mine">
-        <a @click="() => DeleteMessage(room.id)" id="button"> Delete </a>
+    <div v-for=" message in  messages" :key=" message.id">
+      {{  message.data.name }} {{  message.data.message }}
+      <span v-if="message.mine">
+        <a @click="() => DeleteMessage(message.id)" id="button"> Delete </a>
       </span>
     </div>
     <input v-model="name" placeholder="your message" />
@@ -14,10 +14,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref } from "vue";
+import { defineComponent, computed, ref, reactive } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { db, firestore } from "../utils/firebase";
+
+import Message from "@/models/message";
 
 export default defineComponent({
   name: "ChatRoom",
@@ -26,21 +28,26 @@ export default defineComponent({
     const route = useRoute();
     const asset = computed(() => store.getters.asset);
     const name = ref("");
-    const rooms = ref([{}]); // NOTE: I don't know how to specify empty object array in TypeScript.
+    const messages = reactive<Message[]>([]);
     const collectinoId = "beastopia-pixelbeasts";
     const refMessages = db.collection(
       `collections/${collectinoId}/rooms/${route.params.roomId}/messages`
     );
-    const query = refMessages.orderBy("created");
-    const detatcher = query.onSnapshot((result) => {
-      rooms.value = result.docs.map((roomDoc) => {
-        const roomData = roomDoc.data();
-        return Object.assign(roomData, {
-          id: roomDoc.id,
-          mine:
-            roomData.uid == store.state.account &&
-            roomData.tokenId == asset.value.token_id,
-        });
+    const messageQuery = refMessages.orderBy("created");
+    const detatcher = messageQuery.onSnapshot((result) => {
+      result.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          const message = new Message(change.doc);
+          message.setMine(store.state.account, asset.value.token_id);
+          messages.push(message);
+        } else if (change.type === "removed") {
+          const removedId = change.doc.id;
+          const removedIndex = messages.findIndex((d) => d.id === removedId);
+          if (removedIndex !== undefined) {
+            messages.splice(removedIndex, 1);
+          }
+        }
+        // TODO modified if need
       });
     });
 
@@ -62,7 +69,7 @@ export default defineComponent({
     };
     return {
       name,
-      rooms,
+      messages,
       asset,
       PostMessage,
       DeleteMessage,
