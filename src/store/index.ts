@@ -1,7 +1,16 @@
 import { createStore } from "vuex";
 import { auth, functions } from "../utils/firebase";
 
-export default createStore({
+import Asset from "@/models/asset";
+
+interface State {
+  account: undefined | null | never;
+  user: null | undefined | never;
+  assets: Asset[];
+  assetIndex: number;
+}
+
+export default createStore<State>({
   state: {
     account: undefined,
     user: undefined,
@@ -15,15 +24,15 @@ export default createStore({
     setAccount(state, account) {
       state.account = account;
     },
-    setAssets(state, assets) {
+    setAssets(state, assets: Asset[]) {
       state.assets = assets;
     },
-    setAssetIndex(state, index) {
+    setAssetIndex(state, index: number) {
       state.assetIndex = index;
       if (state.user && state.assets.length > state.assetIndex) {
         const asset = state.assets[state.assetIndex];
         const selectNFT = functions.httpsCallable("selectNFT");
-        const tokenId = asset["token_id"];
+        const tokenId = asset.tokenId();
         console.log("selectNFT", tokenId);
         selectNFT({
           account: state.account,
@@ -44,6 +53,13 @@ export default createStore({
     },
     asset: (state) => {
       if (state.assets.length > state.assetIndex) {
+        return state.assets[state.assetIndex];
+      }
+      return null;
+    },
+    tokenId: (state) => {
+      if (state.assets.length > state.assetIndex) {
+        console.log(state.assets[state.assetIndex]);
         return state.assets[state.assetIndex];
       }
       return null;

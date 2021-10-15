@@ -62,7 +62,7 @@ export default defineComponent({
       rooms.splice(0);
       result.docs.map((roomDoc) => {
         const room = new Room(roomDoc);
-        room.setMine(store.state.account, asset.value.token_id);
+        room.setMine(store.state.account, asset.value.data.token_id);
         rooms.push(room);
       });
     });
@@ -75,8 +75,8 @@ export default defineComponent({
         created: timestamp,
         updated: timestamp,
         uid: store.state.account,
-        tokenId: asset.value.token_id,
-        name: asset.value.name,
+        tokenId: asset.value.data.token_id,
+        name: asset.value.data.name,
       };
       console.log(data);
       await refRooms.add(data);

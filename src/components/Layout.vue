@@ -13,6 +13,8 @@ import { auth } from "../utils/firebase";
 import firebase from "firebase/app";
 import { fetchAssets } from "../utils/OpenSea";
 
+import Asset from "@/models/asset";
+
 interface User {
   user: firebase.User | null;
 }
@@ -30,7 +32,7 @@ export default defineComponent({
           console.log("authStateChanged:");
           store.commit("setUser", reactive<User>({ user: user }));
           fetchAssets(store.state.account, "beastopia-pixelbeasts").then(
-            (assets) => {
+            (assets: Asset[]) => {
               store.commit("setAssets", assets);
               store.commit("setAssetIndex", 0);
             }
