@@ -4,25 +4,22 @@
       {{ room.name }}
       <span v-if="room.mine">
         <a @click="()=>DeleteRoom(room.id)"
-        class="m-2 bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center px-6 rounded-lg hover:bg-green-600 hover:text-white">
+          id="button">
           Delete
         </a>
       </span>
     </div>
     <div v-if="isCreating">
         <input v-model="name" placeholder="room name">
-        <a @click="CreateRoom"
-    class="m-2 bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center px-6 rounded-lg hover:bg-green-600 hover:text-white">
+        <a @click="CreateRoom" id="button">
         <span>Create</span>
         </a>
-        <a @click="() => {setCreating(false)}"
-    class="m-2 bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center px-6 rounded-lg hover:bg-green-600 hover:text-white">
+        <a @click="() => {setCreating(false)}" id="button">
         <span>Cancel</span>
         </a>
     </div>
     <div v-else >
-      <a @click="() => {setCreating(true)}"
-  class="m-2 bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center px-6 rounded-lg hover:bg-green-600 hover:text-white">
+      <a @click="() => {setCreating(true)}" id="button">
       <span>+ Room</span>
       </a>
     </div>
