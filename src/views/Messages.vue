@@ -35,11 +35,13 @@ export default defineComponent({
     let tokenId2 = route.params.tokenId;
     if (tokenId1 > tokenId2) {
         tokenId2 = tokenId1;
-        tokenId1 = asset.value.token_id;
+        tokenId1 = route.params.tokenId;
     }
     const refMessages = db.collection(
       `collections/${collectinoId}/users/${tokenId1}/rooms/${tokenId2}/messages`
     );
+    console.log(refMessages.path);
+
     const messageQuery = refMessages.orderBy("created");
     const detatcher = messageQuery.onSnapshot((result) => {
       result.docChanges().forEach((change) => {

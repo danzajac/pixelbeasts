@@ -15,9 +15,9 @@ function hasNFT(request, collectionId, tokenId) {
 }
 */
 
-function hasNFT2(request, collectionId, tokenId, tokenId2) {
+function hasNFT2(request, collectionId, tokenId1, tokenId2) {
   return request.auth.token.collectionId == collectionId
-      && (request.auth.token.tokenId == tokenId || request.auth.token.tokenId == tokenId2);
+      && (request.auth.token.tokenId == tokenId1 || request.auth.token.tokenId == tokenId2);
 }
 
 function isRequestOwner(request) {
@@ -61,16 +61,16 @@ service cloud.firestore {
               && isResourceOwner(request, resource);
         }
       }
-      match /users/{tokenId} {
-        match /rooms/{tokenId2} { // tokenId2 is the tokenId of another user (tokenId < tokenId2)
-          match /messasges/{messageId} {
-            allow read: if hasNFT2(request, collectionId, tokenId, tokenId2);
+      match /users/{tokenId1} {
+        match /rooms/{tokenId2} { // tokenId2 is the tokenId1 of another user (tokenId1 < tokenId2)
+          match /messages/{messageId} {
+            allow read: if hasNFT2(request, collectionId, tokenId1, tokenId2);
             allow create: if hasCollection(request, collectionId) 
               && isRequestOwner(request);
-            allow update: if hasNFT2(request, collectionId, tokenId, tokenId2)
+            allow update: if hasNFT2(request, collectionId, tokenId1, tokenId2)
                 && isRequestOwner(request) && isResourceOwner(request, resource)
                 && request.resource.isUpdated == true;
-            allow delete: if hasNFT2(request, collectionId, tokenId, tokenId2)
+            allow delete: if hasNFT2(request, collectionId, tokenId1, tokenId2)
               && isResourceOwner(request, resource);
           }
         }
