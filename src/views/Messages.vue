@@ -34,6 +34,8 @@ export default defineComponent({
     const store = useStore();
     const route = useRoute();
     const asset = computed(() => store.getters.asset);
+    const myTokenId = computed(() => store.getters.tokenId);
+    console.log(myTokenId);
     const name = ref("");
     const messages = reactive<DirectMessage[]>([]);
 

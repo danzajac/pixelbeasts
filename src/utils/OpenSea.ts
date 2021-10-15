@@ -1,4 +1,7 @@
-export const fetchAssets = async (account: string, collection: string) => {
+import { AssetData } from "@/models/asset";
+import Asset from "@/models/asset";
+
+export const fetchAssets = async (account: string, collection: string): Promise<Asset[]> => {
   const params: Record<string, string> = {
     owner: String(account),
     offset: String(0),
@@ -12,6 +15,8 @@ export const fetchAssets = async (account: string, collection: string) => {
   const url = "https://api.opensea.io/api/v1/assets?" + query.join("&");
   const result = await fetch(url);
   const json = await result.json();
-  const assets = json["assets"];
+  const assetsData = json["assets"] as AssetData[];
+  const assets = assetsData.map(data => new Asset(data))
+  console.log(assets);
   return assets;
 };
