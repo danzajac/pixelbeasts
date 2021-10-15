@@ -1,6 +1,14 @@
 <template>
   <div class="about">
-    <h1 class="text-4xl font-bold my-6">{{ asset.token_id }}</h1>
+    <div v-for="room in rooms" :key="room.id">
+      {{ room.name }}
+      <span v-if="room.mine">
+        <a @click="()=>DeleteRoom(room.id)"
+        class="m-2 bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center px-6 rounded-lg hover:bg-green-600 hover:text-white">
+          Delete
+        </a>
+      </span>
+    </div>
     <div v-if="isCreating">
         <input v-model="name" placeholder="room name">
         <a @click="CreateRoom"
@@ -15,17 +23,8 @@
     <div v-else >
       <a @click="() => {setCreating(true)}"
   class="m-2 bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center px-6 rounded-lg hover:bg-green-600 hover:text-white">
-      <span>New Room</span>
+      <span>+ Room</span>
       </a>
-    </div>
-    <div v-for="room in rooms" :key="room.id">
-      {{ room.name }}
-      <span v-if="room.mine">
-        <a @click="()=>DeleteRoom(room.id)"
-        class="m-2 bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center px-6 rounded-lg hover:bg-green-600 hover:text-white">
-          Delete
-        </a>
-      </span>
     </div>
   </div>
 </template>
