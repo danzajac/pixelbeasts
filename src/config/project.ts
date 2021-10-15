@@ -5,7 +5,7 @@ export const firebaseConfig = {
   storageBucket: "the-pixelbeasts.appspot.com",
   messagingSenderId: "639845455045",
   appId: "1:639845455045:web:a5d8f91843b2c33c484cac",
-  measurementId: "G-0RQS980EBJ"
+  measurementId: "G-0RQS980EBJ",
 };
 /*
 export const firebaseConfig = {

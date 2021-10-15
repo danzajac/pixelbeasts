@@ -1,7 +1,6 @@
 <template>
   <div class="layout">
-    <template v-if="isSiginedIn">
-    </template>
+    <template v-if="isSiginedIn"> </template>
     <router-view />
   </div>
 </template>
@@ -30,15 +29,17 @@ export default defineComponent({
         if (user) {
           console.log("authStateChanged:");
           store.commit("setUser", reactive<User>({ user: user }));
-          fetchAssets(store.state.account, "beastopia-pixelbeasts").then(assets => {
-            store.commit('setAssets', assets);
-            store.commit('setAssetIndex', 0);
-          })
+          fetchAssets(store.state.account, "beastopia-pixelbeasts").then(
+            (assets) => {
+              store.commit("setAssets", assets);
+              store.commit("setAssetIndex", 0);
+            }
+          );
         } else {
           store.commit("setUser", null);
         }
-        store.commit('setAssetIndex', 0);
-        store.commit('setAssets', []);
+        store.commit("setAssetIndex", 0);
+        store.commit("setAssets", []);
       });
     });
 
@@ -49,7 +50,7 @@ export default defineComponent({
 
     return {
       isSiginedIn,
-      account
+      account,
     };
   },
 });

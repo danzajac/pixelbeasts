@@ -6,7 +6,7 @@ export default createStore({
     account: undefined,
     user: undefined,
     assets: [],
-    assetIndex: 0
+    assetIndex: 0,
   },
   mutations: {
     setUser(state, user) {
@@ -22,19 +22,21 @@ export default createStore({
       state.assetIndex = index;
       if (state.user && state.assets.length > state.assetIndex) {
         const asset = state.assets[state.assetIndex];
-        const selectNFT = functions.httpsCallable('selectNFT');
+        const selectNFT = functions.httpsCallable("selectNFT");
         const tokenId = asset["token_id"];
         console.log("selectNFT", tokenId);
-        selectNFT({account: state.account, 
-          collectionId: "beastopia-pixelbeasts", 
-          tokenId }).then((result) => {
-            // console.log(result.data);
-            auth.currentUser?.getIdToken(true).then((result) => {
-              console.log(result)
+        selectNFT({
+          account: state.account,
+          collectionId: "beastopia-pixelbeasts",
+          tokenId,
+        }).then((result) => {
+          // console.log(result.data);
+          auth.currentUser?.getIdToken(true).then((result) => {
+            console.log(result);
           });
         });
       }
-    }
+    },
   },
   getters: {
     isSiginedIn: (state) => {
@@ -45,7 +47,7 @@ export default createStore({
         return state.assets[state.assetIndex];
       }
       return null;
-    }
+    },
   },
   actions: {},
   modules: {},
