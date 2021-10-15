@@ -27,7 +27,7 @@ export default createStore<State>({
     setAssets(state, assets: Asset[]) {
       state.assets = assets;
     },
-    setAssetIndex(state, index) {
+    setAssetIndex(state, index: number) {
       state.assetIndex = index;
       if (state.user && state.assets.length > state.assetIndex) {
         const asset = state.assets[state.assetIndex];

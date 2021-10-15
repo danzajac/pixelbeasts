@@ -22,8 +22,8 @@
                 id="button"
                 class="m-2"
               >
-                <span>{{ asset.name }}</span>
-                <img :src="asset.image_thumbnail_url" class="m-2 w-20" />
+                <span>{{ asset.data.name }}</span>
+                <img :src="asset.data.image_thumbnail_url" class="m-2 w-20" />
               </a>
             </div>
           </div>

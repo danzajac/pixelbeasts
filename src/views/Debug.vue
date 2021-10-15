@@ -32,8 +32,8 @@ export default defineComponent({
     const debug1 = async () => {
       try {
         const debug1 = functions.httpsCallable("debug1");
-        console.log(asset.value.token_id);
-        const result = await debug1({ account, tokenId: asset.value.token_id });
+        console.log(asset.value.data.token_id);
+        const result = await debug1({ account, tokenId: asset.value.data.token_id });
         console.log(result.data);
         console.log("custome claims", result.data.token);
         alert("success!");
