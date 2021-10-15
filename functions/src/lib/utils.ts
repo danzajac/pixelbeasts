@@ -21,5 +21,5 @@ export const validateNFT = async (context: functions.https.CallableContext,
     throw new functions.https.HttpsError("failed-precondition",
         "Invalid tokenId.");
   }
-  return {uid, collectionId, tokenId};
+  return {uid, collectionId, tokenId, name: asset.name};
 };

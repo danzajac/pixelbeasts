@@ -1,7 +1,7 @@
 <template>
   <div class="about">
     <div v-for="room in rooms" :key="room.id">
-      <router-link :to="`/chat/${room.id}`">{{ room.name }}</router-link>
+      <router-link :to="`/chat/${room.id}`">{{ room.title }}</router-link>
       <span v-if="room.mine">
         <a @click="()=>DeleteRoom(room.id)"
           id="button">
@@ -58,12 +58,14 @@ export default defineComponent({
     const CreateRoom = async () => {
         const timestamp =  firestore.FieldValue.serverTimestamp();
         const data = {
-          name: name.value,
+          title: name.value,
           created: timestamp,
           updated: timestamp,
           uid: store.state.account,
-          tokenId: asset.value.token_id
+          tokenId: asset.value.token_id,
+          name: asset.value.name,
         };
+        console.log(data);
         const doc = await refRooms.add(data);
         isCreating.value = false;
         name.value = "";

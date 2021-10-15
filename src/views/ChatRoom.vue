@@ -1,7 +1,7 @@
 <template>
   <div class="about">
     <div v-for="room in rooms" :key="room.id">
-      {{ room.tokenId }} {{ room.name }}
+      {{ room.name }} {{ room.message }}
       <span v-if="room.mine">
         <a @click="()=>DeleteMessage(room.id)"
           id="button">
@@ -46,11 +46,12 @@ export default defineComponent({
     const PostMessage = async () => {
         const timestamp =  firestore.FieldValue.serverTimestamp();
         const data = {
-          name: name.value,
+          message: name.value,
           created: timestamp,
           updated: timestamp,
           uid: store.state.account,
-          tokenId: asset.value.token_id
+          tokenId: asset.value.token_id,
+          name: asset.value.name,
         };
         const doc = await refMessages.add(data);
         name.value = "";

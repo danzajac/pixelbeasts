@@ -15,11 +15,13 @@ function hasNFT(request, collectionId, tokenId) {
 
 function isRequestOwner(request) {
   return request.auth.uid == request.resource.data.uid
+    && request.auth.token.name == request.resource.data.name
     && request.auth.token.tokenId == request.resource.data.tokenId;  
 }
 
 function isResourceOwner(request, resource) {
   return request.auth.uid == resource.data.uid
+    && request.auth.token.name == resource.data.name
     && request.auth.token.tokenId == resource.data.tokenId;  
 }
 
