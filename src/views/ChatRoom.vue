@@ -1,50 +1,38 @@
 <template>
   <div class="about">
     <div v-for="room in rooms" :key="room.id">
-      <router-link :to="`/chat/${room.id}`">{{ room.title }}</router-link>
+      {{ room.name }} {{ room.message }}
       <span v-if="room.mine">
-        <a @click="()=>DeleteRoom(room.id)"
+        <a @click="()=>DeleteMessage(room.id)"
           id="button">
           Delete
         </a>
       </span>
     </div>
-    <div v-if="isCreating">
-        <input v-model="name" placeholder="room name">
-        <a @click="CreateRoom" id="button">
-        <span>Create</span>
-        </a>
-        <a @click="() => {setCreating(false)}" id="button">
-        <span>Cancel</span>
-        </a>
-    </div>
-    <div v-else >
-      <a @click="() => {setCreating(true)}" id="button">
-      <span>+ Room</span>
-      </a>
-    </div>
+    <input v-model="name" placeholder="your message">
+    <a @click="PostMessage" id="button">
+    <span>Post</span>
+    </a>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref } from "vue";
+import { defineComponent, computed, ref} from "vue";
+import { useRoute } from 'vue-router';
 import { useStore } from "vuex";
 import { db, firestore } from "../utils/firebase";
 
 export default defineComponent({
-  name: "Account",
+  name: "ChatRoom",
   setup() {
     const store = useStore();
+    const route = useRoute();
     const asset = computed(() => store.getters.asset);
     const name  = ref("");
     const rooms = ref([{}]); // NOTE: I don't know how to specify empty object array in TypeScript.
-    const isCreating = ref(false);
-    const setCreating = (flag: boolean) => {
-      isCreating.value = flag;
-    };
     const collectinoId = "beastopia-pixelbeasts";
-    const refRooms = db.collection(`collections/${collectinoId}/rooms`);
-    const query = refRooms.orderBy("updated");
+    const refMessages = db.collection(`collections/${collectinoId}/rooms/${route.params.roomId}/messages`);
+    const query = refMessages.orderBy("created");
     const detatcher = query.onSnapshot(result => {
 
       rooms.value = result.docs.map(roomDoc => {
@@ -55,32 +43,28 @@ export default defineComponent({
       });
     });
 
-    const CreateRoom = async () => {
+    const PostMessage = async () => {
         const timestamp =  firestore.FieldValue.serverTimestamp();
         const data = {
-          title: name.value,
+          message: name.value,
           created: timestamp,
           updated: timestamp,
           uid: store.state.account,
           tokenId: asset.value.token_id,
           name: asset.value.name,
         };
-        console.log(data);
-        const doc = await refRooms.add(data);
-        isCreating.value = false;
+        const doc = await refMessages.add(data);
         name.value = "";
     }
-    const DeleteRoom = async (id: string) => {
-      await refRooms.doc(id).delete();
+    const DeleteMessage = async (id: string) => {
+      await refMessages.doc(id).delete();
     };
     return {
       name,
       rooms,
-      isCreating,
       asset,
-      setCreating,
-      CreateRoom,
-      DeleteRoom,
+      PostMessage,
+      DeleteMessage,
     }
   }
 });

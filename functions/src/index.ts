@@ -27,13 +27,13 @@ export const debug1 = functions.https.onCall(async (data, context) => {
 });
 
 export const selectNFT = functions.https.onCall(async (data, context) => {
-  const {uid, collectionId, tokenId} = await validateNFT(context,
+  const {uid, collectionId, tokenId, name} = await validateNFT(context,
       data.collectionId, data.tokenId);
   const refAccount = db.doc(`accounts/${uid}`);
   await refAccount.set({collectionId, tokenId,
     selected: admin.firestore.FieldValue.serverTimestamp()});
   console.log("### selectNFT 1", collectionId, tokenId, uid);
-  await auth.setCustomUserClaims(uid, {collectionId, tokenId});
+  await auth.setCustomUserClaims(uid, {collectionId, tokenId, name});
   const updated = await admin.auth().getUser(uid);
   console.log("### selectNFT 2", updated.customClaims);
   return {uid, collectionId, tokenId};

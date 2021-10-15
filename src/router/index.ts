@@ -5,6 +5,7 @@ import Account from "../views/Account.vue";
 import About from "../views/About.vue";
 import Debug from "../views/Debug.vue";
 import Chat from "../views/Chat.vue";
+import ChatRoom from "../views/ChatRoom.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -25,6 +26,11 @@ const routes: Array<RouteRecordRaw> = [
         path: "/chat",
         name: "Chat",
         component: Chat,
+      },
+      {
+        path: "/chat/:roomId",
+        name: "ChatRoom",
+        component: ChatRoom,
       },
       {
         path: "/debug",
