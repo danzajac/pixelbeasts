@@ -18,4 +18,9 @@ export default class FirebaseModel {
 
     this.id = _model.id;
   }
+
+  deleteModel() {
+    this.model.ref.delete();
+  }
+
 }

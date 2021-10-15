@@ -3,7 +3,7 @@
     <div v-for="room in rooms" :key="room.id">
       <router-link :to="`/chat/${room.id}`">{{ room.data.title }}</router-link>
       <span v-if="room.mine">
-        <a @click="() => DeleteRoom(room.id)" id="button"> Delete </a>
+        <a @click="() => DeleteRoom(room)" id="button"> Delete </a>
       </span>
     </div>
     <div v-if="isCreating">
@@ -82,8 +82,8 @@ export default defineComponent({
       isCreating.value = false;
       name.value = "";
     };
-    const DeleteRoom = async (id: string) => {
-      await refRooms.doc(id).delete();
+    const DeleteRoom = async (room: Room) => {
+      await room.deleteModel();
       // TODO: delete all messages ??
     };
     return {

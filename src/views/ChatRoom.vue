@@ -3,7 +3,7 @@
     <div v-for="message in messages" :key="message.id">
       {{ message.data.name }} {{ message.data.message }}
       <span v-if="message.mine">
-        <a @click="() => DeleteMessage(message.id)" id="button"> Delete </a>
+        <a @click="() => DeleteMessage(message)" id="button"> Delete </a>
       </span>
     </div>
     <input v-model="name" placeholder="your message" />
@@ -64,8 +64,8 @@ export default defineComponent({
       const doc = await refMessages.add(data);
       name.value = "";
     };
-    const DeleteMessage = async (id: string) => {
-      await refMessages.doc(id).delete();
+    const DeleteMessage = async (message: Message) => {
+      await message.deleteModel();
     };
     return {
       name,
