@@ -39,7 +39,8 @@ service cloud.firestore {
         allow create: if hasCollection(request, collectionId) 
             && isRequestOwner(request);
         allow update: if hasCollection(request, collectionId)
-            && isRequestOwner(request) && isResourceOwner(request, resource);
+            && isRequestOwner(request) && isResourceOwner(request, resource)
+            && request.resource.isUpdated == true;
         allow delete: if hasCollection(request, collectionId)
             && isResourceOwner(request, resource);
         match /messages/{messageId} {
@@ -47,7 +48,8 @@ service cloud.firestore {
           allow create: if hasCollection(request, collectionId) 
               && isRequestOwner(request);
           allow update: if hasCollection(request, collectionId)
-              && isRequestOwner(request) && isResourceOwner(request, resource);
+              && isRequestOwner(request) && isResourceOwner(request, resource)
+              && request.resource.isUpdated == true;
           allow delete: if hasCollection(request, collectionId)
               && isResourceOwner(request, resource);
         }
@@ -55,7 +57,13 @@ service cloud.firestore {
       match /users/{tokenId} {
         match /messasges/{messageId} {
           allow read: if hasNFT(request, collectionId, tokenId);
-          allow write: if false; // server needs to verify the ownership in real time.
+          allow create: if hasCollection(request, collectionId) 
+            && isRequestOwner(request);
+          allow update: if hasCollection(request, collectionId)
+              && isRequestOwner(request) && isResourceOwner(request, resource)
+              && request.resource.isUpdated == true;
+          allow delete: if hasCollection(request, collectionId)
+            && isResourceOwner(request, resource);
         }
       }
     }
