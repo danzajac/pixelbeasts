@@ -1,7 +1,8 @@
 <template>
   <div class="about">
     <div v-for="message in messages" :key="message.id">
-      {{ message.data.name }} {{ message.data.message }}
+      <router-link :to="`/messages/${message.data.tokenId}`">{{ message.data.name }}</router-link>
+       {{ message.data.message }}
       <span v-if="message.mine">
         <a @click="() => DeleteMessage(message)" id="button"> Delete </a>
       </span>
