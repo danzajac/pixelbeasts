@@ -3,7 +3,7 @@
     <h1 class="text-4xl font-bold my-6">{{ asset.token_id }}</h1>
     <div v-if="isCreating">
         <input v-model="name" placeholder="room name">
-        <a @click="Create"
+        <a @click="CreateRoom"
     class="m-2 bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center px-6 rounded-lg hover:bg-green-600 hover:text-white">
         <span>Create</span>
         </a>
@@ -20,7 +20,12 @@
     </div>
     <div v-for="room in rooms" :key="room.id">
       {{ room.name }}
-      {{ room.tokenId }}
+      <span v-if="room.mine">
+        <a @click="()=>DeleteRoom(room.id)"
+        class="m-2 bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center px-6 rounded-lg hover:bg-green-600 hover:text-white">
+          Delete
+        </a>
+      </span>
     </div>
   </div>
 </template>
@@ -45,10 +50,16 @@ export default defineComponent({
     const refRooms = db.collection(`collections/${collectinoId}/rooms`);
     const query = refRooms.orderBy("updated");
     const detatcher = query.onSnapshot(result => {
-      rooms.value = result.docs.map(doc => Object.assign(doc.data(), {id:doc.id}));
+
+      rooms.value = result.docs.map(roomDoc => {
+        const roomData = roomDoc.data()
+        return Object.assign(roomData, 
+          {id:roomDoc.id, 
+           mine:roomData.uid==store.state.account && roomData.tokenId==asset.value.token_id});
+      });
     });
 
-    const Create = async () => {
+    const CreateRoom = async () => {
         const timestamp =  firestore.FieldValue.serverTimestamp();
         const data = {
           name: name.value,
@@ -63,13 +74,17 @@ export default defineComponent({
         name.value = "";
         console.log(doc.id);
     }
+    const DeleteRoom = async (id: string) => {
+      await refRooms.doc(id).delete();
+    };
     return {
       name,
       rooms,
       isCreating,
       asset,
       setCreating,
-      Create,
+      CreateRoom,
+      DeleteRoom,
     }
   }
 });
