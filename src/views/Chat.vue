@@ -2,7 +2,7 @@
   <div class="about">
     <h1 class="text-4xl font-bold my-6">{{ asset.token_id }}</h1>
     <div v-if="isCreating">
-        Creating...
+        <input v-model="name" placeholder="room name">
         <a @click="Create"
     class="m-2 bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center px-6 rounded-lg hover:bg-green-600 hover:text-white">
         <span>Create</span>
@@ -12,14 +12,15 @@
         <span>Cancel</span>
         </a>
     </div>
-    <a v-else @click="() => {setCreating(true)}"
-class="m-2 bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center px-6 rounded-lg hover:bg-green-600 hover:text-white">
-    <span>New Room</span>
-    </a>
+    <div v-else >
+      <a @click="() => {setCreating(true)}"
+  class="m-2 bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center px-6 rounded-lg hover:bg-green-600 hover:text-white">
+      <span>New Room</span>
+      </a>
+    </div>
     <div v-for="room in rooms" :key="room.id">
       {{ room.name }}
       {{ room.tokenId }}
-      {{ room.uid }}
     </div>
   </div>
 </template>
@@ -34,6 +35,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const asset = computed(() => store.getters.asset);
+    const name  = ref("");
     const rooms = ref([{}]); // NOTE: I don't know how to specify empty object array in TypeScript.
     const isCreating = ref(false);
     const setCreating = (flag: boolean) => {
@@ -49,7 +51,7 @@ export default defineComponent({
     const Create = async () => {
         const timestamp =  firestore.FieldValue.serverTimestamp();
         const data = {
-          name:"Room 2",
+          name: name.value,
           created: timestamp,
           updated: timestamp,
           uid: store.state.account,
@@ -58,9 +60,11 @@ export default defineComponent({
         console.log(data);
         const doc = await refRooms.add(data);
         isCreating.value = false;
+        name.value = "";
         console.log(doc.id);
     }
     return {
+      name,
       rooms,
       isCreating,
       asset,
