@@ -1,5 +1,10 @@
 <template>
-  <img style="position:absolute" v-if="asset" class="w-16" :src="asset.image_thumbnail_url" />
+  <img
+    style="position: absolute"
+    v-if="asset"
+    class="w-16"
+    :src="asset.image_thumbnail_url"
+  />
   <div id="nav">
     <template v-if="isSiginedIn">
       <router-link to="/">Home</router-link> |
@@ -31,23 +36,23 @@ export default {
     const asset = computed(() => store.getters.asset);
 
     getAccount().then((value) => {
-      store.commit('setAccount', value);
+      store.commit("setAccount", value);
     });
     if (hasMetaMask) {
-      ethereum.on('accountsChanged', accounts => {
+      ethereum.on("accountsChanged", (accounts) => {
         if (accounts.length == 0) {
-          store.commit('setAccount', null);
+          store.commit("setAccount", null);
         } else {
-          store.commit('setAccount', accounts[0]);
+          store.commit("setAccount", accounts[0]);
         }
-      })
+      });
     }
 
     const isSiginedIn = computed(() => store.getters.isSiginedIn);
 
     return {
       isSiginedIn,
-      asset
+      asset,
     };
   },
 };

@@ -3,24 +3,35 @@
     <div v-for="room in rooms" :key="room.id">
       <router-link :to="`/chat/${room.id}`">{{ room.title }}</router-link>
       <span v-if="room.mine">
-        <a @click="()=>DeleteRoom(room.id)"
-          id="button">
-          Delete
-        </a>
+        <a @click="() => DeleteRoom(room.id)" id="button"> Delete </a>
       </span>
     </div>
     <div v-if="isCreating">
-        <input v-model="name" placeholder="room name">
-        <a @click="CreateRoom" id="button">
+      <input v-model="name" placeholder="room name" />
+      <a @click="CreateRoom" id="button">
         <span>Create</span>
-        </a>
-        <a @click="() => {setCreating(false)}" id="button">
+      </a>
+      <a
+        @click="
+          () => {
+            setCreating(false);
+          }
+        "
+        id="button"
+      >
         <span>Cancel</span>
-        </a>
+      </a>
     </div>
-    <div v-else >
-      <a @click="() => {setCreating(true)}" id="button">
-      <span>+ Room</span>
+    <div v-else>
+      <a
+        @click="
+          () => {
+            setCreating(true);
+          }
+        "
+        id="button"
+      >
+        <span>+ Room</span>
       </a>
     </div>
   </div>
@@ -36,7 +47,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const asset = computed(() => store.getters.asset);
-    const name  = ref("");
+    const name = ref("");
     const rooms = ref([{}]); // NOTE: I don't know how to specify empty object array in TypeScript.
     const isCreating = ref(false);
     const setCreating = (flag: boolean) => {
@@ -45,31 +56,33 @@ export default defineComponent({
     const collectinoId = "beastopia-pixelbeasts";
     const refRooms = db.collection(`collections/${collectinoId}/rooms`);
     const query = refRooms.orderBy("updated");
-    const detatcher = query.onSnapshot(result => {
-
-      rooms.value = result.docs.map(roomDoc => {
-        const roomData = roomDoc.data()
-        return Object.assign(roomData, 
-          {id:roomDoc.id, 
-           mine:roomData.uid==store.state.account && roomData.tokenId==asset.value.token_id});
+    const detatcher = query.onSnapshot((result) => {
+      rooms.value = result.docs.map((roomDoc) => {
+        const roomData = roomDoc.data();
+        return Object.assign(roomData, {
+          id: roomDoc.id,
+          mine:
+            roomData.uid == store.state.account &&
+            roomData.tokenId == asset.value.token_id,
+        });
       });
     });
 
     const CreateRoom = async () => {
-        const timestamp =  firestore.FieldValue.serverTimestamp();
-        const data = {
-          title: name.value,
-          created: timestamp,
-          updated: timestamp,
-          uid: store.state.account,
-          tokenId: asset.value.token_id,
-          name: asset.value.name,
-        };
-        console.log(data);
-        const doc = await refRooms.add(data);
-        isCreating.value = false;
-        name.value = "";
-    }
+      const timestamp = firestore.FieldValue.serverTimestamp();
+      const data = {
+        title: name.value,
+        created: timestamp,
+        updated: timestamp,
+        uid: store.state.account,
+        tokenId: asset.value.token_id,
+        name: asset.value.name,
+      };
+      console.log(data);
+      const doc = await refRooms.add(data);
+      isCreating.value = false;
+      name.value = "";
+    };
     const DeleteRoom = async (id: string) => {
       await refRooms.doc(id).delete();
     };
@@ -81,7 +94,7 @@ export default defineComponent({
       setCreating,
       CreateRoom,
       DeleteRoom,
-    }
-  }
+    };
+  },
 });
 </script>
