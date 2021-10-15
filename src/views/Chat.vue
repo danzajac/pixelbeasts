@@ -42,6 +42,8 @@ import { defineComponent, computed, ref } from "vue";
 import { useStore } from "vuex";
 import { db, firestore } from "../utils/firebase";
 
+import Room from "@/models/room";
+
 export default defineComponent({
   name: "Account",
   setup() {
@@ -58,12 +60,10 @@ export default defineComponent({
     const query = refRooms.orderBy("updated");
     const detatcher = query.onSnapshot((result) => {
       rooms.value = result.docs.map((roomDoc) => {
-        const roomData = roomDoc.data();
-        return Object.assign(roomData, {
-          id: roomDoc.id,
-          mine:
-            roomData.uid == store.state.account &&
-            roomData.tokenId == asset.value.token_id,
+        const room = new Room(roomDoc);
+        return Object.assign(room.data, {
+          id: room.id,
+          mine: room.isMine(store.state.account, asset.value.token_id)
         });
       });
     });
