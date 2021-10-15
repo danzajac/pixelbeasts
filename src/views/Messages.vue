@@ -1,4 +1,8 @@
 <template>
+<div>
+  <div>
+    <h2>Direct message to #{{yourTokenId}}</h2>
+  </div>
   <div class="about">
     <div v-for="message in messages" :key="message.id">
       <router-link :to="`/messages/${message.data.tokenId}`">{{ message.data.name }}</router-link>
@@ -12,6 +16,7 @@
       <span>Post</span>
     </a>
   </div>
+</div>
 </template>
 
 <script lang="ts">
@@ -20,23 +25,20 @@ import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { db, firestore } from "../utils/firebase";
 
-import Message from "@/models/message";
+import DirectMessage from "@/models/directMessage";
 
 export default defineComponent({
-  name: "ChatRoom",
+  name: "Messages",
   setup() {
     const store = useStore();
     const route = useRoute();
     const asset = computed(() => store.getters.asset);
     const name = ref("");
-    const messages = reactive<Message[]>([]);
+    const messages = reactive<DirectMessage[]>([]);
     const collectinoId = "beastopia-pixelbeasts";
-    let tokenId1 = asset.value.token_id;
-    let tokenId2 = route.params.tokenId;
-    if (tokenId1 > tokenId2) {
-        tokenId2 = tokenId1;
-        tokenId1 = route.params.tokenId;
-    }
+    const [tokenId1, tokenId2] = [asset.value.token_id, route.params.tokenId].sort();
+    const yourTokenId = route.params.tokenId;
+    
     const refMessages = db.collection(
       `collections/${collectinoId}/users/${tokenId1}/rooms/${tokenId2}/messages`
     );
@@ -46,7 +48,7 @@ export default defineComponent({
     const detatcher = messageQuery.onSnapshot((result) => {
       result.docChanges().forEach((change) => {
         if (change.type === "added") {
-          const message = new Message(change.doc);
+          const message = new DirectMessage(change.doc);
           message.setMine(store.state.account, asset.value.token_id);
           messages.push(message);
         } else if (change.type === "removed") {
@@ -75,13 +77,14 @@ export default defineComponent({
       const doc = await refMessages.add(data);
       name.value = "";
     };
-    const DeleteMessage = async (message: Message) => {
+    const DeleteMessage = async (message: DirectMessage) => {
       await message.deleteModel();
     };
     return {
       name,
       messages,
       asset,
+      yourTokenId,
       PostMessage,
       DeleteMessage,
     };
