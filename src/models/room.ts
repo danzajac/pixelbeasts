@@ -11,7 +11,6 @@ export default class Room extends FirebaseModel {
   }
 
   isMine(account: string, tokenId: string) {
-    return this.data.uid ===  account && 
-      this.data.tokenId === tokenId;
+    return this.data.uid === account && this.data.tokenId === tokenId;
   }
 }

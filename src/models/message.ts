@@ -3,7 +3,7 @@ import FirebaseModel from "./firebasemodel";
 
 export default class Message extends FirebaseModel {
   mine: boolean;
-  
+
   constructor(
     _model:
       | firebase.firestore.QueryDocumentSnapshot
@@ -16,9 +16,8 @@ export default class Message extends FirebaseModel {
   setMine(account: string, tokenId: string) {
     this.mine = this.isMine(account, tokenId);
   }
-  
+
   isMine(account: string, tokenId: string) {
-    return this.data.uid ===  account && 
-      this.data.tokenId === tokenId;
+    return this.data.uid === account && this.data.tokenId === tokenId;
   }
 }
