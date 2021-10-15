@@ -25,6 +25,7 @@ import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { db, firestore } from "../utils/firebase";
 
+import { defaultCollectionId } from "@/utils/const";
 import DirectMessage from "@/models/directMessage";
 
 export default defineComponent({
@@ -35,12 +36,12 @@ export default defineComponent({
     const asset = computed(() => store.getters.asset);
     const name = ref("");
     const messages = reactive<DirectMessage[]>([]);
-    const collectinoId = "beastopia-pixelbeasts";
-    const [tokenId1, tokenId2] = [asset.value.token_id, route.params.tokenId].sort();
+
     const yourTokenId = route.params.tokenId;
+    const [tokenId1, tokenId2] = [asset.value.token_id, yourTokenId].sort();
     
     const refMessages = db.collection(
-      `collections/${collectinoId}/users/${tokenId1}/rooms/${tokenId2}/messages`
+      `collections/${defaultCollectionId}/users/${tokenId1}/rooms/${tokenId2}/messages`
     );
     console.log(refMessages.path);
 
