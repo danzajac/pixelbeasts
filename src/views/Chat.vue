@@ -1,7 +1,7 @@
 <template>
   <div class="about">
     <div v-for="room in rooms" :key="room.id">
-      <router-link :to="`/chat/${room.id}`">{{ room.title }}</router-link>
+      <router-link :to="`/chat/${room.id}`">{{ room.data.title }}</router-link>
       <span v-if="room.mine">
         <a @click="() => DeleteRoom(room.id)" id="button"> Delete </a>
       </span>
@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref } from "vue";
+import { defineComponent, computed, ref, reactive } from "vue";
 import { useStore } from "vuex";
 import { db, firestore } from "../utils/firebase";
 
@@ -50,7 +50,7 @@ export default defineComponent({
     const store = useStore();
     const asset = computed(() => store.getters.asset);
     const name = ref("");
-    const rooms = ref([{}]); // NOTE: I don't know how to specify empty object array in TypeScript.
+    const rooms = reactive<Room[]>([]);
     const isCreating = ref(false);
     const setCreating = (flag: boolean) => {
       isCreating.value = flag;
@@ -59,12 +59,11 @@ export default defineComponent({
     const refRooms = db.collection(`collections/${collectinoId}/rooms`);
     const query = refRooms.orderBy("updated");
     const detatcher = query.onSnapshot((result) => {
-      rooms.value = result.docs.map((roomDoc) => {
+      rooms.splice(0);
+      result.docs.map((roomDoc) => {
         const room = new Room(roomDoc);
-        return Object.assign(room.data, {
-          id: room.id,
-          mine: room.isMine(store.state.account, asset.value.token_id),
-        });
+        room.setMine(store.state.account, asset.value.token_id);
+        rooms.push(room);
       });
     });
 
@@ -85,6 +84,7 @@ export default defineComponent({
     };
     const DeleteRoom = async (id: string) => {
       await refRooms.doc(id).delete();
+      // TODO: delete all messages ??
     };
     return {
       name,

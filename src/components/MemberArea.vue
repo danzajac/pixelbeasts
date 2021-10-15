@@ -1,5 +1,5 @@
 <template>
-<div>
+  <div>
     <router-view v-if="isSiginedIn && haveAssets" />
     <div v-else>Loading....</div>
   </div>
@@ -14,7 +14,7 @@ export default defineComponent({
     const store = useStore();
     const isSiginedIn = computed(() => store.getters.isSiginedIn);
     const haveAssets = computed(() => store.getters.haveAssets);
-    
+
     return {
       isSiginedIn,
       haveAssets,
