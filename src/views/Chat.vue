@@ -63,7 +63,7 @@ export default defineComponent({
         const room = new Room(roomDoc);
         return Object.assign(room.data, {
           id: room.id,
-          mine: room.isMine(store.state.account, asset.value.token_id)
+          mine: room.isMine(store.state.account, asset.value.token_id),
         });
       });
     });

@@ -48,6 +48,10 @@ export default createStore({
       }
       return null;
     },
+    haveAssets: (state) => {
+      console.log(state.assets);
+      return state.assets.length > 0;
+    },
   },
   actions: {},
   modules: {},
