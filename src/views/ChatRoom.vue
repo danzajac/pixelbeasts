@@ -3,14 +3,14 @@
     <div v-for="room in rooms" :key="room.id">
       {{ room.name }}
       <span v-if="room.mine">
-        <a @click="()=>DeleteRoom(room.id)"
+        <a @click="()=>DeleteMessage(room.id)"
           id="button">
           Delete
         </a>
       </span>
     </div>
     <input v-model="name" placeholder="your message">
-    <a @click="CreateRoom" id="button">
+    <a @click="PostMessage" id="button">
     <span>Post</span>
     </a>
   </div>
@@ -32,7 +32,7 @@ export default defineComponent({
     const rooms = ref([{}]); // NOTE: I don't know how to specify empty object array in TypeScript.
     const collectinoId = "beastopia-pixelbeasts";
     const refMessages = db.collection(`collections/${collectinoId}/rooms/${route.params.roomId}/messages`);
-    const query = refMessages.orderBy("updated");
+    const query = refMessages.orderBy("created");
     const detatcher = query.onSnapshot(result => {
 
       rooms.value = result.docs.map(roomDoc => {
@@ -43,7 +43,7 @@ export default defineComponent({
       });
     });
 
-    const CreateRoom = async () => {
+    const PostMessage = async () => {
         const timestamp =  firestore.FieldValue.serverTimestamp();
         const data = {
           name: name.value,
@@ -52,20 +52,18 @@ export default defineComponent({
           uid: store.state.account,
           tokenId: asset.value.token_id
         };
-        console.log(data);
         const doc = await refMessages.add(data);
         name.value = "";
-        console.log(doc.id);
     }
-    const DeleteRoom = async (id: string) => {
+    const DeleteMessage = async (id: string) => {
       await refMessages.doc(id).delete();
     };
     return {
       name,
       rooms,
       asset,
-      CreateRoom,
-      DeleteRoom,
+      PostMessage,
+      DeleteMessage,
     }
   }
 });

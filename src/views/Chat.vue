@@ -64,11 +64,9 @@ export default defineComponent({
           uid: store.state.account,
           tokenId: asset.value.token_id
         };
-        console.log(data);
         const doc = await refRooms.add(data);
         isCreating.value = false;
         name.value = "";
-        console.log(doc.id);
     }
     const DeleteRoom = async (id: string) => {
       await refRooms.doc(id).delete();
