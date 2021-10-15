@@ -5,12 +5,19 @@ rules_version = '2';
 // tokenId: token_id of the NFT that the user has chosen 
 
 function hasCollection(request, collectionId) {
-  return request.auth.token.collectionId == collectionId
+  return request.auth.token.collectionId == collectionId;
 }
 
+/*
 function hasNFT(request, collectionId, tokenId) {
   return request.auth.token.collectionId == collectionId
-      && request.auth.token.tokenId == tokenId
+      && request.auth.token.tokenId == tokenId;
+}
+*/
+
+function hasNFT2(request, collectionId, tokenId, tokenId2) {
+  return request.auth.token.collectionId == collectionId
+      && (request.auth.token.tokenId == tokenId || request.auth.token.tokenId == tokenId2);
 }
 
 function isRequestOwner(request) {
@@ -55,15 +62,17 @@ service cloud.firestore {
         }
       }
       match /users/{tokenId} {
-        match /messasges/{messageId} {
-          allow read: if hasNFT(request, collectionId, tokenId);
-          allow create: if hasCollection(request, collectionId) 
-            && isRequestOwner(request);
-          allow update: if hasCollection(request, collectionId)
-              && isRequestOwner(request) && isResourceOwner(request, resource)
-              && request.resource.isUpdated == true;
-          allow delete: if hasCollection(request, collectionId)
-            && isResourceOwner(request, resource);
+        match /rooms/{tokenId2} { // tokenId2 is the tokenId of another user (tokenId < tokenId2)
+          match /messasges/{messageId} {
+            allow read: if hasNFT2(request, collectionId, tokenId, tokenId2);
+            allow create: if hasCollection(request, collectionId) 
+              && isRequestOwner(request);
+            allow update: if hasNFT2(request, collectionId, tokenId, tokenId2)
+                && isRequestOwner(request) && isResourceOwner(request, resource)
+                && request.resource.isUpdated == true;
+            allow delete: if hasNFT2(request, collectionId, tokenId, tokenId2)
+              && isResourceOwner(request, resource);
+          }
         }
       }
     }
