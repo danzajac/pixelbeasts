@@ -1,7 +1,7 @@
 <template>
   <div class="about">
     <div v-for="room in rooms" :key="room.id">
-      {{ room.name }}
+      <router-link :to="`/chat/${room.id}`">{{ room.name }}</router-link>
       <span v-if="room.mine">
         <a @click="()=>DeleteRoom(room.id)"
           id="button">
