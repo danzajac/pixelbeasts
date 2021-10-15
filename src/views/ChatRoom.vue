@@ -9,20 +9,10 @@
         </a>
       </span>
     </div>
-    <div v-if="isCreating">
-        <input v-model="name" placeholder="room name">
-        <a @click="CreateRoom" id="button">
-        <span>Create</span>
-        </a>
-        <a @click="() => {setCreating(false)}" id="button">
-        <span>Cancel</span>
-        </a>
-    </div>
-    <div v-else >
-      <a @click="() => {setCreating(true)}" id="button">
-      <span>+ Room</span>
-      </a>
-    </div>
+    <input v-model="name" placeholder="your message">
+    <a @click="CreateRoom" id="button">
+    <span>Post</span>
+    </a>
   </div>
 </template>
 
@@ -40,10 +30,6 @@ export default defineComponent({
     const asset = computed(() => store.getters.asset);
     const name  = ref("");
     const rooms = ref([{}]); // NOTE: I don't know how to specify empty object array in TypeScript.
-    const isCreating = ref(false);
-    const setCreating = (flag: boolean) => {
-      isCreating.value = flag;
-    };
     const collectinoId = "beastopia-pixelbeasts";
     const refMessages = db.collection(`collections/${collectinoId}/rooms/${route.params.roomId}/messages`);
     const query = refMessages.orderBy("updated");
@@ -68,7 +54,6 @@ export default defineComponent({
         };
         console.log(data);
         const doc = await refMessages.add(data);
-        isCreating.value = false;
         name.value = "";
         console.log(doc.id);
     }
@@ -78,9 +63,7 @@ export default defineComponent({
     return {
       name,
       rooms,
-      isCreating,
       asset,
-      setCreating,
       CreateRoom,
       DeleteRoom,
     }
