@@ -7,6 +7,7 @@ import About from "@/views/About.vue";
 import Debug from "@/views/Debug.vue";
 import Chat from "@/views/Chat.vue";
 import ChatRoom from "@/views/ChatRoom.vue";
+import Messages from "@/views/Messages.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -36,6 +37,11 @@ const routes: Array<RouteRecordRaw> = [
             path: "/chat/:roomId",
             name: "ChatRoom",
             component: ChatRoom,
+          },
+          {
+            path: "/messages/:tokenId",
+            name: "Messages",
+            component: Messages,
           },
         ],
       },
