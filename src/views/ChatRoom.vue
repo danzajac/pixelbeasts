@@ -44,6 +44,7 @@ export default defineComponent({
           const removedId = change.doc.id;
           const removedIndex = messages.findIndex((d) => d.id === removedId);
           if (removedIndex !== undefined) {
+            delete messages[removedIndex];
             messages.splice(removedIndex, 1);
           }
         }
