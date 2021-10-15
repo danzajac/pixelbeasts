@@ -9,19 +9,16 @@
         <div v-if="isSiginedIn">
           <p class="m-4">You are signed-in with your MetaMask identity.
                       <a 
-            @click="signOut"
-            class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
-          >
+            @click="signOut" id="button">
             Sign Out
           </a>
 
           </p>
           <div v-if="assets">
             <div v-for="(asset, index) in assets" :key="asset.id">
-              <a @click="()=>{selectAsset(index)}"
-            class="m-2 bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center px-6 rounded-lg hover:bg-green-600 hover:text-white">
-              <span>{{ asset.name }}</span>
-              <img :src="asset.image_thumbnail_url" class="m-2 w-20" />
+              <a @click="()=>{selectAsset(index)}" id="button" class="m-2">
+                <span>{{ asset.name }}</span>
+                <img :src="asset.image_thumbnail_url" class="m-2 w-20" />
               </a>
             </div>
           </div>
@@ -35,8 +32,7 @@
           </div>
           <div v-else>
             <p class="m-4">Please sign-in by signing a message from PixelBeasts.</p>
-            <a  @click="verifyIdentity"
-              class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white">
+            <a  @click="verifyIdentity" id="button" class="h-12">
               Step 2: Sign In
             </a>
           </div>
@@ -45,9 +41,7 @@
       <div v-else>
         <p class="m-4">Please connect this site with the MetaMask extension,<br/>
           then sign-in by signing a message from PixelBeasts.</p>
-        <a @click="metaMaskConnect"
-          class="bg-black bg-opacity-5 shadow-lg inline-flex justify-center items-center h-12 px-6 rounded-lg hover:bg-green-600 hover:text-white"
-        >
+        <a @click="metaMaskConnect" id="button" class="h-12">
           Step 1: Connect with MetaMask
         </a>
       </div>
