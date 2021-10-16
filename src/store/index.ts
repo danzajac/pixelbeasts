@@ -10,6 +10,7 @@ interface State {
   user:  undefined | null | firebase.User;
   assets: Asset[];
   assetIndex: number;
+  currentAsset: Asset | null;
 }
 
 export default createStore<State>({
@@ -18,56 +19,66 @@ export default createStore<State>({
     user: undefined,
     assets: [],
     assetIndex: 0,
+    currentAsset: null,
   },
   mutations: {
-    setUser(state, user) {
+    setUser(state: State, user: firebase.User | null) {
       state.user = user;
     },
-    setAccount(state, account) {
+    setAccount(state: State, account) {
       state.account = account;
     },
-    setAssets(state, assets: Asset[]) {
+    setAssets(state: State, assets: Asset[]) {
       state.assets = assets;
+      if (state.assets.length > state.assetIndex) {
+        state.currentAsset = state.assets[state.assetIndex];
+      }
     },
-    setAssetIndex(state, index: number) {
+    setAssetIndex(state: State, index: number) {
       state.assetIndex = index;
-      if (state.user && state.assets.length > state.assetIndex) {
-        const asset = state.assets[state.assetIndex];
-        const selectNFT = functions.httpsCallable("selectNFT");
-        const tokenId = asset.tokenId();
-        console.log("selectNFT", tokenId);
-        selectNFT({
-          account: state.account,
-          collectionId: "beastopia-pixelbeasts",
-          tokenId,
-        }).then((result) => {
-          // console.log(result.data);
-          auth.currentUser?.getIdToken(true).then((result) => {
-            console.log(result);
+      if (state.assets.length > state.assetIndex) {
+        state.currentAsset = state.assets[state.assetIndex];
+        if (state.user) {
+          const selectNFT = functions.httpsCallable("selectNFT");
+          const tokenId = state.currentAsset.data.token_id;
+          console.log("selectNFT", tokenId);
+          selectNFT({
+            account: state.account,
+            collectionId: "beastopia-pixelbeasts",
+            tokenId,
+          }).then((result) => {
+            // console.log(result.data);
+            auth.currentUser?.getIdToken(true).then((result) => {
+              console.log(result);
+            });
           });
-        });
+        }
       }
     },
   },
   getters: {
-    isSiginedIn: (state) => {
+    isSiginedIn: (state: State): boolean  => {
       return state.user !== null && state.user !== undefined;
     },
-    asset: (state) => {
-      if (state.assets.length > state.assetIndex) {
-        return state.assets[state.assetIndex];
+    asset: (state: State): Asset | null => {
+      if (state.currentAsset) {
+        return state.currentAsset;
       }
       return null;
     },
-    tokenId: (state) => {
-      if (state.assets.length > state.assetIndex) {
-        console.log(state.assets[state.assetIndex]);
-        return state.assets[state.assetIndex];
+    assetTokenId: (state: State): string | null => {
+      if (state.currentAsset) {
+        return state.currentAsset.data.token_id;
       }
       return null;
     },
-    haveAssets: (state) => {
-      console.log(state.assets);
+    assetName: (state: State): string | null => {
+      if (state.currentAsset) {
+        return state.currentAsset.data.name;
+      }
+      return null;
+    },
+    haveAssets: (state: State): boolean => {
       return state.assets.length > 0;
     },
   },

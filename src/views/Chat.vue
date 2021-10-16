@@ -49,7 +49,6 @@ export default defineComponent({
   name: "Chat",
   setup() {
     const store = useStore();
-    const asset = computed(() => store.getters.asset);
     const name = ref("");
     const rooms = reactive<Room[]>([]);
     const isCreating = ref(false);
@@ -62,7 +61,7 @@ export default defineComponent({
       rooms.splice(0);
       result.docs.map((roomDoc) => {
         const room = new Room(roomDoc);
-        room.setMine(store.state.account, asset.value.data.token_id);
+        room.setMine(store.state.account, store.getters.assetTokenId);
         rooms.push(room);
       });
     });
@@ -75,8 +74,8 @@ export default defineComponent({
         created: timestamp,
         updated: timestamp,
         uid: store.state.account,
-        tokenId: asset.value.data.token_id,
-        name: asset.value.data.name,
+        tokenId: store.getters.assetTokenId,
+        name: store.getters.assetName,
       };
       console.log(data);
       await refRooms.add(data);
@@ -91,7 +90,6 @@ export default defineComponent({
       name,
       rooms,
       isCreating,
-      asset,
       setCreating,
       CreateRoom,
       DeleteRoom,

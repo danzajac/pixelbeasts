@@ -33,14 +33,12 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const route = useRoute();
-    const asset = computed(() => store.getters.asset);
-    const myTokenId = computed(() => store.getters.tokenId);
-    console.log(myTokenId);
+    const myTokenId = store.getters.assetTokenId;
     const name = ref("");
     const messages = reactive<DirectMessage[]>([]);
 
     const yourTokenId = route.params.tokenId;
-    const [tokenId1, tokenId2] = [asset.value.data.token_id, yourTokenId].sort();
+    const [tokenId1, tokenId2] = [myTokenId, yourTokenId].sort();
     
     const refMessages = db.collection(
       `collections/${defaultCollectionId}/users/${tokenId1}/rooms/${tokenId2}/messages`
@@ -52,7 +50,7 @@ export default defineComponent({
       result.docChanges().forEach((change) => {
         if (change.type === "added") {
           const message = new DirectMessage(change.doc);
-          message.setMine(store.state.account, asset.value.data.token_id);
+          message.setMine(store.state.account, myTokenId);
           messages.push(message);
         } else if (change.type === "removed") {
           const removedId = change.doc.id;
@@ -74,8 +72,8 @@ export default defineComponent({
         created: timestamp,
         updated: timestamp,
         uid: store.state.account,
-        tokenId: asset.value.data.token_id,
-        name: asset.value.data.name,
+        tokenId: myTokenId,
+        name: store.getters.assetName
       };
       const doc = await refMessages.add(data);
       name.value = "";
@@ -86,7 +84,6 @@ export default defineComponent({
     return {
       name,
       messages,
-      asset,
       yourTokenId,
       PostMessage,
       DeleteMessage,
