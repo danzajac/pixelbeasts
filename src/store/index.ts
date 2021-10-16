@@ -1,11 +1,13 @@
+import firebase from "firebase/app";
+
 import { createStore } from "vuex";
 import { auth, functions } from "../utils/firebase";
 
 import Asset from "@/models/asset";
 
 interface State {
-  account: undefined | null | never;
-  user: null | undefined | never;
+  account: undefined | null | string;
+  user:  undefined | null | firebase.User;
   assets: Asset[];
   assetIndex: number;
 }

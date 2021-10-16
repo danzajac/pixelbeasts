@@ -15,10 +15,6 @@ import { fetchAssets } from "../utils/OpenSea";
 
 import Asset from "@/models/asset";
 
-interface User {
-  user: firebase.User | null;
-}
-
 export default defineComponent({
   name: "Layout",
   async setup() {
@@ -30,7 +26,7 @@ export default defineComponent({
       auth.onAuthStateChanged((user) => {
         if (user) {
           console.log("authStateChanged:");
-          store.commit("setUser", reactive<User>({ user: user }));
+          store.commit("setUser", user);
           fetchAssets(store.state.account, "beastopia-pixelbeasts").then(
             (assets: Asset[]) => {
               store.commit("setAssets", assets);
