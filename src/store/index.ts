@@ -72,6 +72,13 @@ export default createStore<State>({
       }
       return null;
     },
+    assetCollectionId: (state: State): string | null => {
+      if (state.currentAsset) {
+        console.log(state.currentAsset.data.collection);
+        return state.currentAsset.data.collection.slug;
+      }
+      return null;
+    },
     assetName: (state: State): string | null => {
       if (state.currentAsset) {
         return state.currentAsset.data.name;

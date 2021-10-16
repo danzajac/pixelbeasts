@@ -20,7 +20,6 @@ import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { db, firestore } from "../utils/firebase";
 
-import { defaultCollectionId } from "@/utils/const";
 import Message from "@/models/message";
 
 export default defineComponent({
@@ -31,8 +30,9 @@ export default defineComponent({
     const asset = computed(() => store.getters.asset);
     const name = ref("");
     const messages = reactive<Message[]>([]);
+    const collectionId = store.getters.assetCollectionId;
     const refMessages = db.collection(
-      `collections/${defaultCollectionId}/rooms/${route.params.roomId}/messages`
+      `collections/${collectionId}/rooms/${route.params.roomId}/messages`
     );
     const messageQuery = refMessages.orderBy("created");
     const detatcher = messageQuery.onSnapshot((result) => {

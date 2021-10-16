@@ -41,7 +41,6 @@
 import { defineComponent, ref, reactive, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import { db, firestore } from "@/utils/firebase";
-import { defaultCollectionId } from "@/utils/const";
 
 import Room from "@/models/room";
 
@@ -55,7 +54,8 @@ export default defineComponent({
     const setCreating = (flag: boolean) => {
       isCreating.value = flag;
     };
-    const refRooms = db.collection(`collections/${defaultCollectionId}/rooms`);
+    const collectionId = store.getters.assetCollectionId;
+    const refRooms = db.collection(`collections/${collectionId}/rooms`);
     const query = refRooms.orderBy("updated");
     const detatcher = query.onSnapshot((result) => {
       rooms.splice(0);

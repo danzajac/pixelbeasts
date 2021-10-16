@@ -27,7 +27,7 @@ export default defineComponent({
         if (user) {
           console.log("authStateChanged:");
           store.commit("setUser", user);
-          fetchAssets(store.state.account, "beastopia-pixelbeasts").then(
+          fetchAssets(store.state.account).then(
             (assets: Asset[]) => {
               store.commit("setAssets", assets);
               store.commit("setAssetIndex", 0);
