@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, reactive, onUnmounted } from "vue";
+import { defineComponent, ref, reactive, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { db, firestore } from "../utils/firebase";
@@ -75,7 +75,7 @@ export default defineComponent({
         tokenId: myTokenId,
         name: store.getters.assetName
       };
-      const doc = await refMessages.add(data);
+      await refMessages.add(data);
       name.value = "";
     };
     const DeleteMessage = async (message: DirectMessage) => {

@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, reactive, onUnmounted } from "vue";
+import { defineComponent, ref, reactive, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import { db, firestore } from "@/utils/firebase";
 import { defaultCollectionId } from "@/utils/const";
