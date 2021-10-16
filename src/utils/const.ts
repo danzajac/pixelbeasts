@@ -1,2 +1,1 @@
-
-//export const defaultCollectionId = "beastopia-pixelbeasts";
+// export const defaultCollectionId = "beastopia-pixelbeasts";

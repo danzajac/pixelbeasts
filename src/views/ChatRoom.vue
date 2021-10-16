@@ -64,7 +64,7 @@ export default defineComponent({
         tokenId: asset.value.data.token_id,
         name: asset.value.data.name,
       };
-      const doc = await refMessages.add(data);
+      await refMessages.add(data);
       name.value = "";
     };
     const DeleteMessage = async (message: Message) => {
