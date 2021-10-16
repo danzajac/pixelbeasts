@@ -9,6 +9,9 @@ import Chat from "@/views/Chat.vue";
 import ChatRoom from "@/views/ChatRoom.vue";
 import Messages from "@/views/Messages.vue";
 
+import Collection from "@/views/Collection.vue";
+import Token from "@/views/Token.vue";
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -42,6 +45,16 @@ const routes: Array<RouteRecordRaw> = [
             path: "/messages/:tokenId",
             name: "Messages",
             component: Messages,
+          },
+          {
+            path: "/collection/:collection",
+            name: "Collection",
+            component: Collection,
+          },
+          {
+            path: "/token/:token",
+            name: "Token",
+            component: Token,
           },
         ],
       },
