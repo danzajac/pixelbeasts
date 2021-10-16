@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 
-import { verifyNonce } from "../functions/ethereum";
+import { generateNonce } from "../../functions/ethereum";
 
 export default functions.https.onCall(async (data, context) => {
-  return await verifyNonce(data, context);
+  return await generateNonce(data, context);
 });

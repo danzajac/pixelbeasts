@@ -12,5 +12,5 @@ const exportIfNeeded = (
   if (isFunctionCalled(functionName)) {
     exports[functionName] = require(`../wrappers/${fileName}`).default;
   }
-}
-export default exportIfNeeded
+};
+export default exportIfNeeded;

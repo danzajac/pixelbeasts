@@ -15,8 +15,9 @@ export const generateNonce = async (
   context: functions.https.CallableContext
 ) => {
   const refNonces = db.collection("nonces");
+  const { account } = data;
   const newData = {
-    account: data.account,
+    account,
     created: admin.firestore.FieldValue.serverTimestamp(),
   };
   const refDoc = await refNonces.add(newData);
@@ -28,8 +29,7 @@ export const verifyNonce = async (
   data: { signature: string; uuid: string },
   context: functions.https.CallableContext
 ) => {
-  const signature = data.signature;
-  const uuid = data.uuid;
+  const { signature, uuid } = data;
   const message = readableMessage + uuid;
   const nonce = "\x19Ethereum Signed Message:\n" + message.length + message;
   const nonceBuffer = util.keccak(Buffer.from(nonce, "utf-8"));
@@ -49,4 +49,20 @@ export const verifyNonce = async (
   const auth = admin.auth();
   const token = await auth.createCustomToken(account);
   return { token };
+};
+
+export const deleteNonce = async (
+  data: { account: string; uuid: string },
+  context: functions.https.CallableContext
+) => {
+  const { account, uuid } = data;
+
+  const refNonce = db.collection("nonces").doc(uuid);
+  const nonceDoc = await refNonce.get();
+  const nonceData = nonceDoc.data();
+  if (nonceData?.account != account) {
+    return { error: "no nonce in the database" };
+  }
+  await refNonce.delete();
+  return { success: true };
 };

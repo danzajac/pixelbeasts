@@ -13,10 +13,6 @@ const auth = admin.auth();
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
 //
-export const helloWorld = functions.https.onRequest((request, response) => {
-  functions.logger.info("Hello logs!", { structuredData: true });
-  response.send("Hello from Firebase!");
-});
 
 export const debug1 = functions.https.onCall(async (data, context) => {
   const { uid, collectionId, tokenId } = await validateNFT(
@@ -65,18 +61,6 @@ export const accountUpdated = functions.firestore.document("/accounts/{uid}")
     });
 */
 
-export const deleteNonce = functions.https.onCall(async (data, context) => {
-  const account = data.account;
-  const uuid = data.uuid;
-  const refNonce = db.collection("nonces").doc(uuid);
-  const nonceDoc = await refNonce.get();
-  const nonceData = nonceDoc.data();
-  if (nonceData?.account != account) {
-    return { error: "no nonce in the database" };
-  }
-  await refNonce.delete();
-  return { success: true };
-});
-
-exportIfNeeded("verifyNonce", "verifyNonce", exports);
-exportIfNeeded("generateNonce", "generateNonce", exports);
+exportIfNeeded("verifyNonce", "nonces/verifyNonce", exports);
+exportIfNeeded("generateNonce", "nonces/generateNonce", exports);
+exportIfNeeded("deleteNonce", "nonces/deleteNonce", exports);
