@@ -1,14 +1,16 @@
 import { AssetData } from "@/models/asset";
 import Asset from "@/models/asset";
 
-export const fetchAssets = async (account: string, collection: string): Promise<Asset[]> => {
+export const fetchAssets = async (account: string, collection: string | null): Promise<Asset[]> => {
   const params: Record<string, string> = {
     owner: String(account),
     offset: String(0),
     limit: String(40),
-    collection: collection,
     order_direction: "desc", // eslint-disable-line @typescript-eslint/camelcase
   };
+  if (collection) {
+    params.colllection = collection;
+  }
   const query = Object.keys(params).map((key) => {
     return key + "=" + encodeURIComponent(params[key]);
   });

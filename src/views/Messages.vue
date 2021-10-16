@@ -25,7 +25,6 @@ import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { db, firestore } from "../utils/firebase";
 
-import { defaultCollectionId } from "@/utils/const";
 import DirectMessage from "@/models/directMessage";
 
 export default defineComponent({
@@ -40,8 +39,9 @@ export default defineComponent({
     const yourTokenId = route.params.tokenId;
     const [tokenId1, tokenId2] = [myTokenId, yourTokenId].sort();
     
+    const collectionId = store.getters.assetCollectionId;
     const refMessages = db.collection(
-      `collections/${defaultCollectionId}/users/${tokenId1}/rooms/${tokenId2}/messages`
+      `collections/${collectionId}/users/${tokenId1}/rooms/${tokenId2}/messages`
     );
     console.log(refMessages.path);
 
