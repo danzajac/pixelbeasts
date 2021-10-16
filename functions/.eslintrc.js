@@ -10,6 +10,7 @@ module.exports = {
     "plugin:import/warnings",
     "plugin:import/typescript",
     "google",
+    "prettier",
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -25,5 +26,6 @@ module.exports = {
   ],
   rules: {
     quotes: ["error", "double"],
+    "camelcase": "off",
   },
 };

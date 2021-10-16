@@ -1,17 +1,20 @@
 import * as https from "https";
 import * as url from "url";
 
-export const request = (_url: string, _options: any, postData?: any):
-    Promise<any> => {
+export const request = (
+  _url: string,
+  _options: any,
+  postData?: any
+): Promise<any> => {
   const parsedURL = url.parse(_url);
   const options = Object.assign(
-      {
-        hostname: parsedURL.host,
-        port: 443,
-        path: parsedURL.path,
-        method: "GET",
-      },
-      _options
+    {
+      hostname: parsedURL.host,
+      port: 443,
+      path: parsedURL.path,
+      method: "GET",
+    },
+    _options
   );
   return new Promise((resolve, reject) => {
     const req = https.request(options, (res) => {
