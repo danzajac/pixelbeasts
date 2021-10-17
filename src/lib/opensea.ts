@@ -13,7 +13,7 @@ export const fetchAssets = async (
 ): Promise<Asset[]> => {
   const params: Record<string, string> = {
     owner: String(account),
-    order_direction: "desc",
+    order_direction: "desc", // eslint-disable-line @typescript-eslint/camelcase
     offset: String(0),
     limit: String(40),
   };
@@ -21,7 +21,7 @@ export const fetchAssets = async (
     params.colllection = collection;
   }
   if (tokenId) {
-    params.token_ids = tokenId;
+    params.token_ids = tokenId; // eslint-disable-line @typescript-eslint/camelcase
   }
   const query = Object.keys(params).map((key) => {
     return key + "=" + encodeURIComponent(params[key]);
