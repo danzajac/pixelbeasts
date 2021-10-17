@@ -18,7 +18,7 @@ export const fetchAssets = async (
     limit: String(40),
   };
   if (collection) {
-    params.colllection = collection;
+    params.collection = collection;
   }
   if (tokenId) {
     params.token_ids = tokenId;
