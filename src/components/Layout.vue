@@ -6,12 +6,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, onMounted, computed } from "vue";
+import { defineComponent, onMounted, computed } from "vue";
 import { useStore } from "vuex";
 
 import { auth } from "../utils/firebase";
-import firebase from "firebase/app";
-import { fetchAssets } from "../utils/OpenSea";
+import { fetchAssets } from "@/lib/opensea";
 
 import Asset from "@/models/asset";
 
@@ -27,7 +26,7 @@ export default defineComponent({
         if (user) {
           console.log("authStateChanged:");
           store.commit("setUser", user);
-          fetchAssets(store.state.account, null).then(
+          fetchAssets(store.state.account, null, null).then(
             (assets: Asset[]) => {
               store.commit("setAssets", assets);
               store.commit("setAssetIndex", 0);

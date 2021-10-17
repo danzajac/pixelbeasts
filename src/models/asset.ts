@@ -1,6 +1,6 @@
 export interface CollectionData {
   slug: string;
-};
+}
 export interface AssetData {
   token_id: string;
   image_thumbnail_url: string;
