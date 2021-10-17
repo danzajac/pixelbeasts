@@ -2,7 +2,7 @@
 import { AssetData } from "@/models/asset";
 import Asset from "@/models/asset";
 
-import { request } from "./netutils";
+import { request } from "@/lib/netutils";
 
 // https://docs.opensea.io/reference/api-overview
 

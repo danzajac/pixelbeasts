@@ -10,7 +10,7 @@ import { defineComponent, onMounted, computed } from "vue";
 import { useStore } from "vuex";
 
 import { auth } from "../utils/firebase";
-import { fetchAssets } from "../utils/OpenSea";
+import { fetchAssets } from "@/lib/opensea";
 
 import Asset from "@/models/asset";
 
