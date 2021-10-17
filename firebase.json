@@ -5,6 +5,8 @@
   },
   "functions": {
     "predeploy": [
+      "cp src/lib/opensea.ts functions/src/lib/opensea.ts",
+      "cp src/models/asset.ts functions/src/models/asset.ts",
       "npm --prefix \"$RESOURCE_DIR\" run lint",
       "npm --prefix \"$RESOURCE_DIR\" run build"
     ],

@@ -24,11 +24,11 @@ export const validateNFT = async (
     );
   }
   const asset = await fetchAsset(uid, collectionId, tokenId);
-  if (!asset || asset.token_id != tokenId) {
+  if (!asset || asset.data.token_id != tokenId) {
     throw new functions.https.HttpsError(
       "failed-precondition",
       "Invalid tokenId."
     );
   }
-  return { uid, collectionId, tokenId, name: asset.name };
+  return { uid, collectionId, tokenId, name: asset.data.name };
 };

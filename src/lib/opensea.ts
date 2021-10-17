@@ -1,8 +1,8 @@
 // This source file is copied from the web to functions.
-import { AssetData } from "@/models/asset";
-import Asset from "@/models/asset";
+import { AssetData } from "../models/asset";
+import Asset from "../models/asset";
 
-import { request } from "@/lib/netutils";
+import { request } from "../lib/netutils";
 
 // https://docs.opensea.io/reference/api-overview
 
@@ -33,3 +33,13 @@ export const fetchAssets = async (
   console.log(assets);
   return assets;
 };
+
+export const fetchAsset = async (
+  account: string,
+  collection: string ,
+  tokenId: string,
+): Promise<Asset|null> => {
+  const assets = await fetchAssets(account, collection, tokenId);
+  console.log("fetchAsset assets.count", assets.length);
+  return assets.length > 0 ? assets[0] : null;
+}
